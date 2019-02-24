@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Cooling Tower Log</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta name="mobile-web-app-capable" content="yes">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.js"></script>
+		<script src="js/client.js" async></script>
+		<title>Dashboard</title>
+		<link rel="stylesheet" href="../css/main.css">
+		<link rel="stylesheet" href="./css/dashboard.css">
+	</head>
+	<body>
+		<header>
+			<img class="drawer-icon" src="./img/baseline-menu-24px.svg">
+			<div class="title"> KC COOLING TOWER LOG</div>
+		</header>
+		<div class="towerForms">
+			<div class="towerForm card">
+				<div class="formHeader">
+					Add To Water Tower
+				</div>
+				<div class="group">
+		      <input id="wtwo" type="text" name="wo">
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+		      <label>Work Order Number</label>
+    		</div>
+				<div class="group">
+		      <input id="wtpid" type="text" name="pid">
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+		      <label>Produc ID</label>
+    		</div>
+				<div class="group">
+		      <input id="wtdesc" type="text" name="desc">
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+		      <label>Description</label>
+    		</div>
+				<div class="group">
+		      	<input id="wtt" type="time" value="03:00" >
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+    		</div>
+
+				<button id="wtsb" type="button" class="btn">Add</button>
+			</div>
+			<div class="towerForm card">
+				<div class="formHeader">
+					Add To Air Tower
+				</div>
+				<div class="group">
+		      <input id="atwo" type="text" name="wo">
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+		      <label>Work Order Number</label>
+    		</div>
+				<div class="group">
+		      <input id="atpid" type="text" name="pid">
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+		      <label>Produc ID</label>
+    		</div>
+				<div class="group">
+		      <input id="atdesc" type="text" name="desc">
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+		      <label>Description</label>
+    		</div>
+				<div class="group">
+		      	<input id="att" type="time" value="03:00" >
+		      <span class="highlight"></span>
+		      <span class="bar"></span>
+    		</div>
+
+				<button id="atsb" type="button" class="btn">Add</button>
+			</div>
+		</div>
+
+		<div class="towersWrapper">
+			<div class="towerWrapper">
+				<h3>Water Tower</h3>
+				<div class="card">
+					<div class="listItemHeader">
+						<div class="wo">WO #</div>
+						<div class="pid">Product ID</div>
+						<div class="desc">Description</div>
+						<div class="time">Time In</div>
+						<div class="exitTime">Time Left</div>
+						<div class=""></div>
+					</div>
+					<div id="waterTowerList" class="towerList">	</div>
+				</div>
+			</div>
+			<div class="towerWrapper">
+				<h3>Air Tower</h3>
+				<div class="card">
+					<div class="listItemHeader">
+						<div class="wo">WO #</div>
+						<div class="pid">Product ID</div>
+						<div class="desc">Description</div>
+						<div class="time">Time In</div>
+						<div class="exitTime">Time Left</div>
+						<div class=""></div>
+					</div>
+					<div id="airTowerList" class="towerList">	</div>
+				</div>
+
+			</div>
+		</div>
+	</body>
+
+	<script>
+
+	let att = document.getElementById('att');
+	let wtt = document.getElementById('wtt');
+	updateTimer(att);
+	updateTimer(wtt);
+	att.addEventListener("focus", updateTimerEvent);
+	wtt.addEventListener("focus", updateTimerEvent);
+
+
+	function updateTimer( t ){
+		t.value = getTime();
+		console.log(formatTime(t.valueAsNumber));
+	}
+
+	function updateTimerEvent( e ){
+		updateTimer(event.target);
+	}
+
+	function formatTime( t ){
+		let MINUTE = 60000;
+		let HOUR = MINUTE * 60;
+		let DAY = HOUR * 24;
+
+		if ( t >= DAY ) t = t - DAY;
+  	let mins = t / MINUTE;
+  	let hrs = mins / 60;;
+  	let hr = Math.floor(hrs);
+  	let min = Math.floor((hrs - hr) * 60);
+
+  	if(hr < 10) hr = '0' + hr;
+  	if(min < 10) min = '0' + min;
+
+  	let v = hr + ":" + min;
+  	return v;
+  }
+
+	function getTime(){
+		var d = new Date(),
+		h = d.getHours(),
+		m = d.getMinutes();
+		if(h < 10) h = '0' + h;
+		if(m < 10) m = '0' + m;
+		let v = h + ":" + m;
+		return v;
+	}
+
+	let towerForms = document.getElementsByClassName('towerForms')[0];
+	let drawerToggle = document.getElementsByClassName('drawer-icon')[0];
+	let isFormVisible = true;
+	function toggleDrawer(){
+		if (isFormVisible) {
+			towerForms.classList.add('hidden');
+		}else {
+			towerForms.classList.remove('hidden');
+		}
+
+		isFormVisible = !isFormVisible;
+	}
+	drawerToggle.addEventListener('click', toggleDrawer );
+	</script>
+</html>
