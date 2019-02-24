@@ -114,7 +114,7 @@ let KCTC = ( () => {
 			pid: atpid.value,
 			desc: atdesc.value,
 			time: att.valueAsNumber,
-			exitTime: att.valueAsNumber + (125 * MINUTE)
+			exitTime: att.valueAsNumber + (125 * MINUTE) + MINUTE
     });
     clearInputs()
   };
@@ -129,7 +129,7 @@ let KCTC = ( () => {
 			pid: wtpid.value,
 			desc: wtdesc.value,
 			time: wtt.valueAsNumber,
-			exitTime: wtt.valueAsNumber + (120 * MINUTE)
+			exitTime: wtt.valueAsNumber + (120 * MINUTE) + MINUTE
 		});
     clearInputs();
 	};
@@ -181,7 +181,7 @@ let KCTC = ( () => {
 			wo.innerText = entry.wo;
 			pid.innerText = entry.pid;
 			desc.innerText = entry.desc;
-			time.innerText = formatTime(entry.time);
+			time.innerText = formatDateTime(entry.time);
 			exitTime.innerText = formatTime(getTimeLeft(entry));
       deleteButton.src = "./img/baseline-delete-24px.svg";
 
@@ -197,15 +197,12 @@ let KCTC = ( () => {
 		console.log(`Loaded ${id}`);
 	}
 	function getTimeAsNumber(){
-		var d = new Date(),
-		h = d.getHours(),
-		m = d.getMinutes();
-		return h * HOUR + m * MINUTE;
+		return Date.now();
 	}
 
 	function getTimeLeft( item ){
 		let exitTime = item.exitTime;
-		let now = getTimeAsNumber();
+		let now = getTimeAsNumber() - 8 * HOUR;
 		let timeLeft = exitTime - now;
 
 		return timeLeft;

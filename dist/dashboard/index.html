@@ -40,7 +40,7 @@
 		      <label>Description</label>
     		</div>
 				<div class="group">
-		      	<input id="wtt" type="time" value="03:00" >
+		      	<input id="wtt" type="datetime-local">
 		      <span class="highlight"></span>
 		      <span class="bar"></span>
     		</div>
@@ -70,7 +70,7 @@
 		      <label>Description</label>
     		</div>
 				<div class="group">
-		      	<input id="att" type="time" value="03:00" >
+		      	<input id="att" type="datetime-local" value="2018-06-12T19:30">
 		      <span class="highlight"></span>
 		      <span class="bar"></span>
     		</div>
@@ -121,22 +121,44 @@
 	att.addEventListener("focus", updateTimerEvent);
 	wtt.addEventListener("focus", updateTimerEvent);
 
-
+	String.prototype.replaceAt=function(index, replacement) {
+    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+	}
 	function updateTimer( t ){
-		t.value = getTime();
-		console.log(formatTime(t.valueAsNumber));
+		/// Format yyyy-MM-ddThh:mm
+		let date = new Date();
+		let dt = date.toISOString();
+		let dts1 = dt.substr(0, 11);
+	 	let dts2 = dt.substr(13, 3);
+		let dts3 = date.getHours() > 10 ? date.getHours() : '0' + date.getHours();
+		let dtst = dts1 + dts3 + dts2;
+
+		t.value = dtst;
+		console.log(formatDateTime(t.valueAsNumber));
 	}
 
 	function updateTimerEvent( e ){
 		updateTimer(event.target);
 	}
 
+	function formatDateTime(t){
+		let date = new Date();
+		date.setTime(t);
+
+  	let hr = date.getHours() + 8;
+  	let min = date.getMinutes();
+
+  	if(hr < 10) hr = '0' + hr;
+  	if(min < 10) min = '0' + min;
+
+  	let v = hr + ":" + min;
+  	return v;
+	}
 	function formatTime( t ){
 		let MINUTE = 60000;
 		let HOUR = MINUTE * 60;
 		let DAY = HOUR * 24;
 
-		if ( t >= DAY ) t = t - DAY;
   	let mins = t / MINUTE;
   	let hrs = mins / 60;;
   	let hr = Math.floor(hrs);
