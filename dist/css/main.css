@@ -3,6 +3,7 @@ body{
 	font-family: Arial;
 	margin: 0;
 	padding: 0;
+	background-color: #eaedf1;
 }
 
 header{
@@ -48,6 +49,12 @@ header .title{
 	 margin-right: 20px;
 }
 
+
+.towerWrapper .card{
+	padding-bottom: 5px;
+	background-color: #2c3e50;
+}
+
 .listItemHeader{
 	border-bottom: 1px solid rgba(0,0,0,0.4);
 	padding: 10px;
@@ -58,6 +65,11 @@ header .title{
 .listItemHeader *{
 	display: inline-block;
 	width: 18.5%;
+}
+
+.towerList{
+	min-height: 43px;
+	background-color: white;
 }
 
 .towerList .listItem{
@@ -140,7 +152,6 @@ header .title{
 * { box-sizing:border-box; }
 
 /* basic stylings ------------------------------------------ */
-body 				 { background:url(https://scotch.io/wp-content/uploads/2014/07/61.jpg); }
 .container 		{
   font-family:'Roboto';
   width:600px;
@@ -272,6 +283,11 @@ input:focus ~ .highlight {
 
 	.towersWrapper{
 		font-size: 0.8em;
+	}
+
+	.towerList .listItem .deleteButton{
+		width: 15px;
+		height: 15px;
 	}
 }
 

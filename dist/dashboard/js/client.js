@@ -116,6 +116,7 @@ let KCTC = ( () => {
 			time: att.valueAsNumber,
 			exitTime: att.valueAsNumber + (125 * MINUTE)
     });
+    clearInputs()
   };
 
 	let sendWaterTower = () => {
@@ -130,8 +131,17 @@ let KCTC = ( () => {
 			time: wtt.valueAsNumber,
 			exitTime: wtt.valueAsNumber + (120 * MINUTE)
 		});
+    clearInputs();
 	};
 
+  function clearInputs(){
+    atwo.value = '';
+    atpid.value = '';
+    atdesc.value = '';
+    wtwo.value = '';
+    wtpid.value = '';
+    wtdesc.value = '';
+  }
 
 	atsb.addEventListener('click', sendAirTower );
 	wtsb.addEventListener('click', sendWaterTower);

@@ -60,14 +60,14 @@ socket.on('connection', function( client ){
 	setInterval(function(){
 		timeAudit(airTower, 'loadAirTower');
 		timeAudit(waterTower, 'loadWaterTower');
-	}, 5000);
+	}, 30000);
 
 	function timeAudit( tower , trigger){
 		for (let i =0; i < tower.length; i++){
 			let item = tower[i];
 			let timeLeft = getTimeLeft(item);
 
-			if (timeLeft < -MINUTE){
+			if (timeLeft < -5 * MINUTE){
 				let deletedItem = tower.splice( i, 1);
 				console.log(`Deleted Entry: ${deletedItem}`);
         client.emit( trigger, tower);
