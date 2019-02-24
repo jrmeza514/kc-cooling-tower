@@ -8,9 +8,9 @@ let KCTC = ( () => {
   };
 
   // Workaround only for the purpose of browser-sync
-  if (SERVER.url.indexOf("localhost")) {
-    SERVER.url = "http://localhost:8000";
-  }
+  // if (SERVER.url.indexOf("localhost")) {
+  //   SERVER.url = "http://localhost:8000";
+  // }
 
   // socket
   let socket = null;
