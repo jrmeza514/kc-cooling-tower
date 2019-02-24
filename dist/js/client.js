@@ -4,7 +4,7 @@ let KCTC = ( () => {
 
   const SERVER = {
     connected: false,
-    url: window.location.href
+    url: 'https://kc-cooling-tower.herokuapp.com'
   };
 
   // Workaround only for the purpose of browser-sync
