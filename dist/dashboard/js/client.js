@@ -12,11 +12,11 @@ let KCTC = ( () => {
     connected: false,
     url: 'https://kc-cooling-tower.herokuapp.com'
   };
+  // 
+  // if (SERVER.url.indexOf("localhost")) {
+  //   SERVER.url = "http://localhost:8000";
+  // }
 
-  if (SERVER.url.indexOf("localhost")) {
-    SERVER.url = "http://localhost:8000";
-  }
-  
 	let atwo = document.getElementById('atwo');
 	let atpid = document.getElementById('atpid');
 	let atdesc = document.getElementById('atdesc');
