@@ -12,7 +12,6 @@ let KCTC = ( () => {
     SERVER.url = "http://localhost:8000";
   }
 
-  console.log(SERVER.url);
   // socket
   let socket = null;
   let SOCKET_CALLBACKS = {};

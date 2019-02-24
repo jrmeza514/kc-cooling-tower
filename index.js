@@ -60,6 +60,7 @@ socket.on('connection', function( client ){
 	setInterval(function(){
 		timeAudit(airTower, 'loadAirTower');
 		timeAudit(waterTower, 'loadWaterTower');
+    console.log('audit');
 	}, 30000);
 
 	function timeAudit( tower , trigger){
@@ -67,7 +68,8 @@ socket.on('connection', function( client ){
 			let item = tower[i];
 			let timeLeft = getTimeLeft(item);
 
-			if (timeLeft < -5 * MINUTE){
+			if (timeLeft < 0){
+
 				let deletedItem = tower.splice( i, 1);
 				console.log(`Deleted Entry: ${deletedItem}`);
         client.emit( trigger, tower);
@@ -78,16 +80,14 @@ socket.on('connection', function( client ){
 });
 
 function getTimeAsNumber(){
-	var d = new Date(),
-	h = d.getHours(),
-	m = d.getMinutes();
-	return h * HOUR + m * MINUTE;
+  return Date.now();
 }
 
 function getTimeLeft( item ){
 	let exitTime = item.exitTime;
-	let now = getTimeAsNumber();
+	let now = getTimeAsNumber() - 8 * HOUR;
 	let timeLeft = exitTime - now;
+  console.log(timeLeft / HOUR);
 
 	return timeLeft;
 }
