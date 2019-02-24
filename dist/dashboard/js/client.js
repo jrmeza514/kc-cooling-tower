@@ -15,7 +15,7 @@ let KCTC = ( () => {
 
   // Workaround only for the purpose of browser-sync
   if (SERVER.url.indexOf("localhost")) {
-    SERVER.url = "http://192.168.29.229:8000";
+    SERVER.url = "http://localhost:8000";
   }
 
 	let atwo = document.getElementById('atwo');
