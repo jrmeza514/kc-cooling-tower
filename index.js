@@ -68,7 +68,7 @@ socket.on('connection', function( client ){
 			let item = tower[i];
 			let timeLeft = getTimeLeft(item);
 
-			if (timeLeft < 0){
+			if (timeLeft < -5 * MINUTE){
 
 				let deletedItem = tower.splice( i, 1);
 				console.log(`Deleted Entry: ${deletedItem}`);
