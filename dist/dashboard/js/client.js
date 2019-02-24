@@ -13,11 +13,6 @@ let KCTC = ( () => {
     url: 'https://kc-cooling-tower.herokuapp.com'
   };
 
-  // Workaround only for the purpose of browser-sync
-  if (SERVER.url.indexOf("localhost")) {
-    SERVER.url = "http://localhost:8000";
-  }
-
 	let atwo = document.getElementById('atwo');
 	let atpid = document.getElementById('atpid');
 	let atdesc = document.getElementById('atdesc');
