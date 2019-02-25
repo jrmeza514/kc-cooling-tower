@@ -64,7 +64,6 @@ header .title{
 }
 .listItemHeader *{
 	display: inline-block;
-	width: 18.5%;
 }
 
 .towerList{
@@ -81,10 +80,41 @@ header .title{
 	color: white;
 }
 
-.towerList .listItem:first-child .deleteButton{
-	content: url('../dashboard/img/baseline-delete-white-24px.svg');
+.listItem .wo{
+	width: 15%;
 }
 
+.listItem .pid{
+	width: 10%;
+}
+
+.listItem .desc{
+	width: 37%;
+}
+
+.listItem .time{
+	width: 14%;
+}
+
+.listItem .exitTime{
+	width: 19%;
+}
+
+.listItemHeader .wo {
+	width: 14.5%;
+}
+.listItemHeader .pid {
+	width: 9.5%;
+}
+.listItemHeader .desc {
+	width: 36%;
+}
+.listItemHeader .time {
+	width: 13.5%;
+}
+.listItemHeader .exitTime {
+	width: 18.5%;
+}
 .towerList .listItem .deleteButton{
 	width: 20px;
 	height: 20px;
@@ -92,10 +122,13 @@ header .title{
 	right: 0;
 	cursor: pointer;
 }
+.towerList .listItem:first-child .deleteButton{
+	content: url('../dashboard/img/baseline-delete-white-24px.svg');
+}
+
 
 .towerList .listItem * {
 	display: inline-block;
-	width: 19%;
 }
 
 
