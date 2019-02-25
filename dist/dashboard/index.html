@@ -130,11 +130,10 @@
 		let dt = date.toISOString();
 		let dts1 = dt.substr(0, 11);
 	 	let dts2 = dt.substr(13, 3);
-		let dts3 = date.getHours() > 10 ? date.getHours() : '0' + date.getHours();
+		let dts3 = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
 		let dtst = dts1 + dts3 + dts2;
 
 		t.value = dtst;
-		console.log(formatDateTime(t.valueAsNumber));
 	}
 
 	function updateTimerEvent( e ){
