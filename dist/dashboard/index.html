@@ -128,11 +128,11 @@
 		/// Format yyyy-MM-ddThh:mm
 		let date = new Date();
 		let dt = date.toISOString();
-		let dts1 = dt.substr(0, 11);
+		let dts1 = dt.substr(0, 8);
 	 	let dts2 = dt.substr(13, 3);
 		let dts3 = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
-		let dtst = dts1 + dts3 + dts2;
-
+		let dts4 = date.getDate();
+		let dtst = dts1 + dts4 + 'T' + dts3 + dts2;
 		t.value = dtst;
 	}
 
