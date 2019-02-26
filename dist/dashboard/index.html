@@ -144,7 +144,7 @@
 		let date = new Date();
 		date.setTime(t);
 
-  	let hr = date.getHours() + 8;
+  	let hr = (date.getHours() + 8) % 24;
   	let min = date.getMinutes();
 
   	if(hr < 10) hr = '0' + hr;
