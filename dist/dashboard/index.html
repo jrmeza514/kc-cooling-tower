@@ -203,6 +203,10 @@
 	function formatDateTime(t){
 		let date = new Date();
 		date.setTime(t);
+		let month = date.getMonth() + 1;
+		let dat = date.getDate();
+		let year = date.getFullYear() % 100;
+		let dstr = month + '/' + dat + '/' + year;
 
   	let hr = (date.getHours() + 8) % 24;
   	let min = date.getMinutes();
@@ -210,7 +214,7 @@
   	if(hr < 10) hr = '0' + hr;
   	if(min < 10) min = '0' + min;
 
-  	let v = hr + ":" + min;
+  	let v = dstr + ' ' +hr + ":" + min;
   	return v;
 	}
 	function formatTime( t ){
