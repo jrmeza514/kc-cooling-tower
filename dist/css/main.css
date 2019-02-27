@@ -79,7 +79,7 @@ header .title{
 }
 
 .towerList{
-	min-height: 43px;
+	min-height: 40px;
 	background-color: white;
 }
 
@@ -153,7 +153,6 @@ header .title{
 /*Tower Forms*/
 .towerForms{
 	display: flex;
-	overflow: hidden;
 	padding-bottom: 30px;
 }
 
@@ -180,6 +179,11 @@ header .title{
 	flex-grow: 1;
 }
 
+.input-group.date{
+	position: relative;
+	top: 40px;
+	left: 5px;
+}
 
 .btn{
 	background-color: #e74c3c;
@@ -224,11 +228,12 @@ h2 small {
 	display: inline-block;
   margin-bottom:25px;
 	margin-top: 25px;
+	width: 48%;
 }
 input 				{
   padding:10px 10px 10px 5px;
   display:block;
-  width:300px;
+  width: 100%;
   border:none;
   border-bottom:1px solid #757575;
 }
@@ -319,6 +324,9 @@ input:focus ~ .highlight {
 
 
 @media screen and (max-width: 1400px) {
+	.group{
+		width: 48%;
+	}
 	.towerForms, .towersWrapper{
 		flex-direction: column;
 	}
@@ -332,7 +340,7 @@ input:focus ~ .highlight {
 	}
 
 	.towerList{
-		min-height: 37px;
+		min-height: 35px;
 	}
 	.towerList .listItem .deleteButton{
 		width: 15px;
@@ -341,6 +349,16 @@ input:focus ~ .highlight {
 }
 
 @media screen and (max-width: 600px) {
+	.group{
+		width: 100%;
+	}
+
+	.input-group.date{
+		position: relative;
+		top: 0px;
+		left: 0px;
+	}
+
 	.towersWrapper{
 		font-size: 0.5em;
 	}

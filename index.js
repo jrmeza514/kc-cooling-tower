@@ -57,11 +57,11 @@ socket.on('connection', function( client ){
       client.broadcast.emit(trigger, tower);
     }
   });
-	setInterval(function(){
-		timeAudit(airTower, 'loadAirTower');
-		timeAudit(waterTower, 'loadWaterTower');
-    console.log('audit');
-	}, 30000);
+	// setInterval(function(){
+	// 	timeAudit(airTower, 'loadAirTower');
+	// 	timeAudit(waterTower, 'loadWaterTower');
+  //   console.log('audit');
+	// }, 30000);
 
 	function timeAudit( tower , trigger){
 		for (let i =0; i < tower.length; i++){

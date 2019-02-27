@@ -12,7 +12,7 @@ let KCTC = ( () => {
     connected: false,
     url: 'https://kc-cooling-tower.herokuapp.com'
   };
-  // 
+  //
   // if (SERVER.url.indexOf("localhost")) {
   //   SERVER.url = "http://localhost:8000";
   // }
@@ -113,7 +113,7 @@ let KCTC = ( () => {
 			pid: atpid.value,
 			desc: atdesc.value,
 			time: att.valueAsNumber,
-			exitTime: att.valueAsNumber + (125 * MINUTE) + MINUTE
+			exitTime: att.valueAsNumber + (125 * MINUTE)
     });
     clearInputs()
   };
@@ -128,7 +128,7 @@ let KCTC = ( () => {
 			pid: wtpid.value,
 			desc: wtdesc.value,
 			time: wtt.valueAsNumber,
-			exitTime: wtt.valueAsNumber + (120 * MINUTE) + MINUTE
+			exitTime: wtt.valueAsNumber + (120 * MINUTE) 
 		});
     clearInputs();
 	};
