@@ -128,7 +128,7 @@ let KCTC = ( () => {
 			pid: wtpid.value,
 			desc: wtdesc.value,
 			time: wtt.valueAsNumber,
-			exitTime: wtt.valueAsNumber + (120 * MINUTE) 
+			exitTime: wtt.valueAsNumber + (120 * MINUTE)
 		});
     clearInputs();
 	};
@@ -164,6 +164,7 @@ let KCTC = ( () => {
 			let desc = document.createElement('div');
 			let time = document.createElement('div');
 			let exitTime = document.createElement('div');
+      let timer =document.createElement('div');
       let deleteButton = document.createElement('img');
 
       deleteButton.addEventListener('click', function(){
@@ -175,13 +176,15 @@ let KCTC = ( () => {
 			desc.className = "desc";
 			time.className = "time";
 			exitTime.className = "exitTime";
+      timer.className = "timer";
       deleteButton.className = "deleteButton";
 
 			wo.innerText = entry.wo;
 			pid.innerText = entry.pid;
 			desc.innerText = entry.desc;
 			time.innerText = formatDateTime(entry.time);
-			exitTime.innerText = formatTime(getTimeLeft(entry));
+			exitTime.innerText = formatDateTime(entry.exitTime);
+      timer.innerText = formatTime(getTimeLeft(entry));
       deleteButton.src = "./img/baseline-delete-24px.svg";
 
 			listItem.appendChild(wo);
@@ -189,6 +192,7 @@ let KCTC = ( () => {
 			listItem.appendChild(desc);
 			listItem.appendChild(time);
 			listItem.appendChild(exitTime);
+      listItem.appendChild(timer);
       listItem.appendChild(deleteButton);
 
 			list.appendChild(listItem);
@@ -213,8 +217,8 @@ let KCTC = ( () => {
 			let item = data[i];
 			let timeLeft = getTimeLeft( item );
 			let listItem = list.getElementsByClassName('listItem')[i];
-			let exitTimeEl = listItem.getElementsByTagName('div')[4];
-			exitTimeEl.innerText = formatTime( timeLeft > 0 ? timeLeft : 0 );
+			let timerEl = listItem.getElementsByTagName('div')[5];
+			timerEl.innerText = formatTime( timeLeft > 0 ? timeLeft : 0 );
 		}
 	}
 

@@ -87,10 +87,7 @@ header .title{
 	padding: 10px;
 	font-size: 0.8em;
 }
-.towerList .listItem:first-child{
-	background-color: #e74c3c;
-	color: white;
-}
+
 
 .listItem .wo{
 	width: 15%;
@@ -101,7 +98,7 @@ header .title{
 }
 
 .listItem .desc{
-	width: 37%;
+	width: 29%;
 }
 
 .listItem .time{
@@ -109,7 +106,10 @@ header .title{
 }
 
 .listItem .exitTime{
-	width: 19%;
+	width: 14%;
+}
+.listItem .timer{
+	width: 14%;
 }
 
 .listItemHeader .wo {
@@ -119,13 +119,16 @@ header .title{
 	width: 9.5%;
 }
 .listItemHeader .desc {
-	width: 36%;
+	width: 28%;
 }
 .listItemHeader .time {
 	width: 13.5%;
 }
 .listItemHeader .exitTime {
-	width: 18.5%;
+	width: 13.5%;
+}
+.listItemHeader .timer {
+	width: 13.5%;
 }
 .towerList .listItem .deleteButton{
 	width: 20px;
@@ -138,6 +141,17 @@ header .title{
 	content: url('../dashboard/img/baseline-delete-white-24px.svg');
 }
 
+.towerList .listItem:nth-child(odd){
+	background-color: #ecf0f1;
+}
+
+.towerList .listItem:nth-child(even){
+	background-color: white;
+}
+.towerList .listItem:first-child{
+	background-color: #e74c3c;
+	color: white;
+}
 
 .towerList .listItem * {
 	display: inline-block;
