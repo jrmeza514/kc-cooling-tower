@@ -184,7 +184,7 @@
 		let dts1 = dt.substr(0, 8);
 	 	let dts2 = dt.substr(13, 3);
 		let dts3 = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
-		let dts4 = date.getDate();
+		let dts4 = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
 		let dtst = dts1 + dts4 + 'T' + dts3 + dts2;
 		t.valueAsNumber = Date.now() - 8 * HOUR;
 
