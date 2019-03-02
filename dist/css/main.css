@@ -137,7 +137,7 @@ header .title{
 	right: 0;
 	cursor: pointer;
 }
-.towerList .listItem:first-child .deleteButton{
+.towerList .listItem.outOfTime .deleteButton{
 	content: url('../dashboard/img/baseline-delete-white-24px.svg');
 }
 
@@ -148,10 +148,15 @@ header .title{
 .towerList .listItem:nth-child(even){
 	background-color: white;
 }
-.towerList .listItem:first-child{
+.towerList .listItem.outOfTime:nth-child(even){
 	background-color: #e74c3c;
 	color: white;
 }
+.towerList .listItem.outOfTime:nth-child(odd){
+	background-color: #e3301c;
+	color: white;
+}
+
 
 .towerList .listItem * {
 	display: inline-block;

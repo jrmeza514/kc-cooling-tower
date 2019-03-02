@@ -158,6 +158,9 @@ let KCTC = ( () => {
       let entry = data[i];
 			let listItem = document.createElement('div');
 			listItem.className = "listItem";
+      if (getTimeLeft(entry) <= 0 ) {
+        listItem.className = "listItem outOfTime"
+      }
 
 			let wo = document.createElement('div');
 			let pid = document.createElement('div');
@@ -184,7 +187,7 @@ let KCTC = ( () => {
 			desc.innerText = entry.desc;
 			time.innerText = formatDateTime(entry.time);
 			exitTime.innerText = formatDateTime(entry.exitTime);
-      timer.innerText = formatTime(getTimeLeft(entry));
+      timer.innerText = formatTime(getTimeLeft(entry) > 0 ? getTimeLeft(entry) : 0);
       deleteButton.src = "./img/baseline-delete-24px.svg";
 
 			listItem.appendChild(wo);
@@ -218,6 +221,9 @@ let KCTC = ( () => {
 			let timeLeft = getTimeLeft( item );
 			let listItem = list.getElementsByClassName('listItem')[i];
 			let timerEl = listItem.getElementsByTagName('div')[5];
+      if (timeLeft <= 0 ) {
+        listItem.classList.add('outOfTime');
+      }
 			timerEl.innerText = formatTime( timeLeft > 0 ? timeLeft : 0 );
 		}
 	}
