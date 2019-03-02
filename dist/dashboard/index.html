@@ -28,6 +28,26 @@
 		</header>
 
 		<div class="towerForms">
+			<script type="text/javascript">
+				let towerForms = document.getElementsByClassName('towerForms')[0];
+				let drawerToggle = document.getElementsByClassName('drawer-icon')[0];
+				let isFormVisible = localStorage.isFormVisible == null ? true : JSON.parse(localStorage.isFormVisible);
+				updateDrawerState();
+
+				function toggleDrawer(){
+					isFormVisible = !isFormVisible;
+					localStorage.setItem('isFormVisible', isFormVisible);
+					updateDrawerState();
+				}
+
+				function updateDrawerState(){
+					if (!isFormVisible) {
+						towerForms.classList.add('hidden');
+					}else {
+						towerForms.classList.remove('hidden');
+					}
+				}
+			</script>
 			<div class="towerForm card">
 				<div class="formHeader">
 					Water Tower
@@ -249,18 +269,7 @@
 		return v;
 	}
 
-	let towerForms = document.getElementsByClassName('towerForms')[0];
-	let drawerToggle = document.getElementsByClassName('drawer-icon')[0];
-	let isFormVisible = true;
-	function toggleDrawer(){
-		if (isFormVisible) {
-			towerForms.classList.add('hidden');
-		}else {
-			towerForms.classList.remove('hidden');
-		}
 
-		isFormVisible = !isFormVisible;
-	}
 	drawerToggle.addEventListener('click', toggleDrawer );
 	</script>
 </html>
