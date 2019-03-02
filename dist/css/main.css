@@ -381,4 +381,8 @@ input:focus ~ .highlight {
 	.towersWrapper{
 		font-size: 0.5em;
 	}
+	.towerList .listItem .deleteButton{
+		width: 10px;
+		height: 10px;
+	}
 }
