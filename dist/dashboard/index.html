@@ -153,123 +153,122 @@
 	</body>
 
 	<script>
-	jQuery(function () {
-		jQuery('#dtpwtt').datetimepicker({
-			format : 'YYYY-MM-DD HH:mm'
+		jQuery(function () {
+			jQuery('#dtpwtt').datetimepicker({
+				format : 'YYYY-MM-DD HH:mm'
+			});
+
+			jQuery('#dtpatt').datetimepicker({
+				format : 'YYYY-MM-DD HH:mm'
+			});
 		});
 
-		jQuery('#dtpatt').datetimepicker({
-			format : 'YYYY-MM-DD HH:mm'
-		});
-	});
-
-	let att = document.getElementById('att');
-	let wtt = document.getElementById('wtt');
-	updateTimer(att);
-	updateTimer(wtt);
-
-	$('#dtpatt').find('input').focus(function(){
+		let att = document.getElementById('att');
+		let wtt = document.getElementById('wtt');
 		updateTimer(att);
-	});
-
-	$('#dtpatt').on('dp.change', function(e){
-		att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
-	});
-	$('#dtpatt').find('input').on('change', function(e){
-		att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
-	});
-
-	$('#dtpwtt').find('input').focus(function(){
 		updateTimer(wtt);
-	});
-	$('#dtpwtt').on('dp.change', function(e){
-		wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
-	});
 
-	$('#dtpwtt').find('input').on('change', function(e){
-		wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
-	});
+		$('#dtpatt').find('input').focus(function(){
+			updateTimer(att);
+		});
 
-	String.prototype.replaceAt=function(index, replacement) {
-    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
-	}
-	function updateTimer( t ){
-		let SECOND = 1000;
-		let MINUTE = 60 * SECOND;
-		let HOUR = MINUTE * 60;
-		let DAY = HOUR * 24;
-		/// Format yyyy-MM-ddThh:mm
-		let date = new Date();
-		let dt = date.toISOString();
-		let dts1 = dt.substr(0, 8);
-	 	let dts2 = dt.substr(13, 3);
-		let dts3 = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
-		let dts4 = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
-		let dtst = dts1 + dts4 + 'T' + dts3 + dts2;
-		t.valueAsNumber = Date.now() - 8 * HOUR;
+		$('#dtpatt').on('dp.change', function(e){
+			att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
+		});
+		$('#dtpatt').find('input').on('change', function(e){
+			att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
+		});
 
-		let dts5 = dtst.replace('T', ' ');
+		$('#dtpwtt').find('input').focus(function(){
+			updateTimer(wtt);
+		});
+		$('#dtpwtt').on('dp.change', function(e){
+			wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
+		});
 
-		if (t.id == 'att') {
-			$('#dtpatt').find('input').val( dts5 );
-		}else if (t.id == 'wtt'){
-			$('#dtpwtt').find('input').val( dts5 );
+		$('#dtpwtt').find('input').on('change', function(e){
+			wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
+		});
+
+		String.prototype.replaceAt=function(index, replacement) {
+	    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
 		}
-		console.log(dts5);
-	}
+		function updateTimer( t ){
+			let SECOND = 1000;
+			let MINUTE = 60 * SECOND;
+			let HOUR = MINUTE * 60;
+			let DAY = HOUR * 24;
+			/// Format yyyy-MM-ddThh:mm
+			let date = new Date();
+			let dt = date.toISOString();
+			let dts1 = dt.substr(0, 8);
+		 	let dts2 = dt.substr(13, 3);
+			let dts3 = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
+			let dts4 = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
+			let dtst = dts1 + dts4 + 'T' + dts3 + dts2;
+			t.valueAsNumber = Date.now() - 8 * HOUR;
 
-	function updateTimerEvent( e ){
-		updateTimer(event.target);
-	}
+			let dts5 = dtst.replace('T', ' ');
 
-	function formatDateTime(t){
-		let date = new Date();
-		date.setTime(t);
-		let month = date.getMonth() + 1;
-		let dat = date.getDate();
-		let year = date.getFullYear() % 100;
-		let dstr = month + '/' + dat + '/' + year;
+			if (t.id == 'att') {
+				$('#dtpatt').find('input').val( dts5 );
+			}else if (t.id == 'wtt'){
+				$('#dtpwtt').find('input').val( dts5 );
+			}
+			console.log(dts5);
+		}
 
-  	let hr = (date.getHours() + 8) % 24;
-  	let min = date.getMinutes();
+		function updateTimerEvent( e ){
+			updateTimer(event.target);
+		}
 
-  	if(hr < 10) hr = '0' + hr;
-  	if(min < 10) min = '0' + min;
+		function formatDateTime(t){
+			let date = new Date();
+			date.setTime(t);
+			let month = date.getMonth() + 1;
+			let dat = date.getDate();
+			let year = date.getFullYear() % 100;
+			let dstr = month + '/' + dat + '/' + year;
 
-  	let v = dstr + ' ' +hr + ":" + min;
-  	return v;
-	}
-	function formatTime( t ){
-		let SECOND = 1000;
-		let MINUTE = 60 * SECOND;
-		let HOUR = MINUTE * 60;
-		let DAY = HOUR * 24;
+	  	let hr = (date.getHours() + 8) % 24;
+	  	let min = date.getMinutes();
 
+	  	if(hr < 10) hr = '0' + hr;
+	  	if(min < 10) min = '0' + min;
 
-  	let mins = t / MINUTE;
-  	let hrs = mins / 60;;
-		let secs = t / SECOND;
-  	let hr = Math.floor(hrs);
-  	let min = Math.floor((hrs - hr) * 60);
-		let sec = Math.floor(secs % 60);
-  	if(hr < 10) hr = '0' + hr;
-  	if(min < 10) min = '0' + min;
-		if (sec < 10) sec = '0' + sec;
-  	let v = hr + ":" + min + ':' + sec;
-  	return v;
-  }
-
-	function getTime(){
-		var d = new Date(),
-		h = d.getHours(),
-		m = d.getMinutes();
-		if(h < 10) h = '0' + h;
-		if(m < 10) m = '0' + m;
-		let v = h + ":" + m;
-		return v;
-	}
+	  	let v = dstr + ' ' +hr + ":" + min;
+	  	return v;
+		}
+		function formatTime( t ){
+			let SECOND = 1000;
+			let MINUTE = 60 * SECOND;
+			let HOUR = MINUTE * 60;
+			let DAY = HOUR * 24;
 
 
-	drawerToggle.addEventListener('click', toggleDrawer );
+	  	let mins = t / MINUTE;
+	  	let hrs = mins / 60;;
+			let secs = t / SECOND;
+	  	let hr = Math.floor(hrs);
+	  	let min = Math.floor((hrs - hr) * 60);
+			let sec = Math.floor(secs % 60);
+	  	if(hr < 10) hr = '0' + hr;
+	  	if(min < 10) min = '0' + min;
+			if (sec < 10) sec = '0' + sec;
+	  	let v = hr + ":" + min + ':' + sec;
+	  	return v;
+	  }
+
+		function getTime(){
+			var d = new Date(),
+			h = d.getHours(),
+			m = d.getMinutes();
+			if(h < 10) h = '0' + h;
+			if(m < 10) m = '0' + m;
+			let v = h + ":" + m;
+			return v;
+		}
+
+		drawerToggle.addEventListener('click', toggleDrawer );
 	</script>
 </html>
