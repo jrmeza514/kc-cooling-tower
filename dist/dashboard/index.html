@@ -199,23 +199,16 @@
 			let HOUR = MINUTE * 60;
 			let DAY = HOUR * 24;
 			/// Format yyyy-MM-ddThh:mm
-			let date = new Date();
-			let dt = date.toISOString();
-			let dts1 = dt.substr(0, 8);
-		 	let dts2 = dt.substr(13, 3);
-			let dts3 = date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
-			let dts4 = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
-			let dtst = dts1 + dts4 + 'T' + dts3 + dts2;
+			let date = new Date(Date.now() - 8 * HOUR);
+			let dt = date.toISOString().substr(0,16).replace('T', ' ');
 			t.valueAsNumber = Date.now() - 8 * HOUR;
 
-			let dts5 = dtst.replace('T', ' ');
-
 			if (t.id == 'att') {
-				$('#dtpatt').find('input').val( dts5 );
+				$('#dtpatt').find('input').val( dt );
 			}else if (t.id == 'wtt'){
-				$('#dtpwtt').find('input').val( dts5 );
+				$('#dtpwtt').find('input').val( dt );
 			}
-			console.log(dts5);
+			console.log(dt);
 		}
 
 		function updateTimerEvent( e ){
@@ -223,14 +216,15 @@
 		}
 
 		function formatDateTime(t){
-			let date = new Date();
-			date.setTime(t);
-			let month = date.getMonth() + 1;
-			let dat = date.getDate();
-			let year = date.getFullYear() % 100;
-			let dstr = month + '/' + dat + '/' + year;
+			let SECOND = 1000;
+			let MINUTE = 60 * SECOND;
+			let HOUR = MINUTE * 60;
+			let DAY = HOUR * 24;
 
-	  	let hr = (date.getHours() + 8) % 24;
+			let date = new Date();
+			date.setTime(t + 8 * HOUR);
+			let dstr = date.toLocaleDateString();
+	  	let hr = date.getHours();
 	  	let min = date.getMinutes();
 
 	  	if(hr < 10) hr = '0' + hr;
