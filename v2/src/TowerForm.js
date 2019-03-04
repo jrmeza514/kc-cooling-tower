@@ -65,6 +65,10 @@ class TowerForm extends Component{
 			exitTime: tt.valueAsNumber + (120 * MINUTE)
 		}
 
+		if (this.props.towerPrefix == 'at') {
+			entry.exitTime = tt.valueAsNumber + (125 * MINUTE);
+		}
+
 		this.props.sendTower(this.props.tower, entry);
 		wo.value = "";
 		pid.value = "";

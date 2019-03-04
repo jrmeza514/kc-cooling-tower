@@ -29,7 +29,7 @@ class TowerTable extends Component{
 	render(){
 		const items = this.props.items;
 		const listItems = items.map((item, index) =>
-			<TowerTableItem className="tableItem" item={item} key={item.toString()} towerName={this.props.towerName} index={index} deleteEntry={this.props.deleteEntry}/>
+			<TowerTableItem className="tableItem" item={item} key={index} towerName={this.props.towerName} index={index} deleteEntry={this.props.deleteEntry}/>
 		);
 
 		return (

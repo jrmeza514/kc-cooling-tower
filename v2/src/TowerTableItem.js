@@ -16,7 +16,7 @@ class TowerTableItem extends Component {
 			this.setState({
 				timeLeft: this.getTimeLeft()
 			});
-		}, 1000);
+		}, 500);
 	}
 
 	render(){
