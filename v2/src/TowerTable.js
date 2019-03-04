@@ -9,17 +9,6 @@ import TowerTableItem from './TowerTableItem';
 import './css/TowerTable.css';
 
 const styles = {
-	towerTitle: {
-		backgroundColor: theme.palette.primary.main,
-		color: 'white',
-		padding: '16px',
-		borderRadius: '100px',
-		fontWeight: 'bold',
-		maxWidth: '120px',
-		textAlign: 'center',
-		marginBottom: '16px',
-		marginTop: '16px'
-	},
 	tableContainer: {
 		width: '100%',
 		backgroundColor: theme.palette.primary.main,
@@ -46,7 +35,7 @@ class TowerTable extends Component{
 		return (
 			<Grid container spacing={16}>
 				<Grid item xs={12}>
-					<div className={this.props.classes.towerTitle}>{this.props.towerTitle}</div>
+					<div className='towerTitle'>{this.props.towerTitle}</div>
 					<div className={this.props.classes.tableContainer + " tableContainer"}>
 						<div className={this.props.classes.tableHeader}>
 							<div className="wo">WO #</div>

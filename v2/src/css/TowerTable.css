@@ -5,6 +5,18 @@
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
+.towerTitle{
+	background-color: #37474f;
+	color: white;
+	padding: 16px;
+	border-radius: 100px;
+	font-weight: bold;
+	max-width: 120px;
+	text-align: center;
+	margin-bottom: 16px;
+	margin-top: 16px;
+}
+
 .tableContainer:hover {
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
@@ -52,4 +64,22 @@
 .timer{
 	width: 14%;
 	display: inline-block;
+}
+
+
+@media screen and (max-width: 600px) {
+	.towerTitle{
+		font-size: 0.5em;
+		padding: 10px;
+		max-width: 70px;
+	}
+
+	.tableContainer{
+		font-size: 0.5em;
+	}
+
+	.listItem .deleteButton{
+		width: 10px;
+		height: 10px;
+	}
 }
