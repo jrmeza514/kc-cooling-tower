@@ -1,28 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="theme-color" content="#000000" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <meta charset="utf-8">
+		<title>Cooling Tower Log</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" type="text/css" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+		<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -37,5 +26,120 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script async>
+    jQuery(function () {
+      jQuery('#dtpwtt').datetimepicker({
+        format : 'YYYY-MM-DD HH:mm'
+      });
+
+      jQuery('#dtpatt').datetimepicker({
+        format : 'YYYY-MM-DD HH:mm'
+      });
+    });
+
+
+    String.prototype.replaceAt=function(index, replacement) {
+      return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+    }
+    function updateTimer( t ){
+      let SECOND = 1000;
+      let MINUTE = 60 * SECOND;
+      let HOUR = MINUTE * 60;
+      let DAY = HOUR * 24;
+      /// Format yyyy-MM-ddThh:mm
+      let date = new Date(Date.now() - 8 * HOUR);
+      let dt = date.toISOString().substr(0,16).replace('T', ' ');
+      t.valueAsNumber = Date.now() - 8 * HOUR;
+
+      if (t.id == 'att') {
+        $('#dtpatt').find('input').val( dt );
+      }else if (t.id == 'wtt'){
+        $('#dtpwtt').find('input').val( dt );
+      }
+      console.log(dt);
+    }
+
+    function updateTimerEvent( e ){
+      updateTimer(event.target);
+    }
+
+    function formatDateTime(t){
+      let SECOND = 1000;
+      let MINUTE = 60 * SECOND;
+      let HOUR = MINUTE * 60;
+      let DAY = HOUR * 24;
+
+      let date = new Date();
+      date.setTime(t + 8 * HOUR);
+      let dstr = date.toLocaleDateString();
+      let hr = date.getHours();
+      let min = date.getMinutes();
+
+      if(hr < 10) hr = '0' + hr;
+      if(min < 10) min = '0' + min;
+
+      let v = dstr + ' ' +hr + ":" + min;
+      return v;
+    }
+    function formatTime( t ){
+      let SECOND = 1000;
+      let MINUTE = 60 * SECOND;
+      let HOUR = MINUTE * 60;
+      let DAY = HOUR * 24;
+
+
+      let mins = t / MINUTE;
+      let hrs = mins / 60;;
+      let secs = t / SECOND;
+      let hr = Math.floor(hrs);
+      let min = Math.floor((hrs - hr) * 60);
+      let sec = Math.floor(secs % 60);
+      if(hr < 10) hr = '0' + hr;
+      if(min < 10) min = '0' + min;
+      if (sec < 10) sec = '0' + sec;
+      let v = hr + ":" + min + ':' + sec;
+      return v;
+    }
+
+    function getTime(){
+      var d = new Date(),
+      h = d.getHours(),
+      m = d.getMinutes();
+      if(h < 10) h = '0' + h;
+      if(m < 10) m = '0' + m;
+      let v = h + ":" + m;
+      return v;
+    }
+
+    $(document).ready(() => {
+      let att = document.getElementById('att');
+      let wtt = document.getElementById('wtt');
+      updateTimer(att);
+      updateTimer(wtt);
+
+      $('#dtpatt').find('input').focus(function(){
+        updateTimer(att);
+      });
+
+      $('#dtpatt').on('dp.change', function(e){
+        att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
+      });
+      $('#dtpatt').find('input').on('change', function(e){
+        att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
+      });
+
+      $('#dtpwtt').find('input').focus(function(){
+        updateTimer(wtt);
+      });
+      $('#dtpwtt').on('dp.change', function(e){
+        wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
+      });
+
+      $('#dtpwtt').find('input').on('change', function(e){
+        wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
+      });
+    });
+
+    </script>
   </body>
 </html>

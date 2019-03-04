@@ -1,0 +1,38 @@
+.listItem{
+	padding: 8px;
+	display: flex;
+	font-size: 0.8em;
+
+}
+
+.listItem .wo{
+	width: 15%;
+}
+
+.listItem .pid{
+	width: 10%;
+}
+
+.listItem .desc{
+	width: 29%;
+}
+
+.listItem .time{
+	width: 14%;
+}
+
+.listItem .exitTime{
+	width: 14%;
+}
+.listItem .timer{
+	width: 14%;
+}
+
+.deleteButton {
+	content: url('../img/baseline-delete-24px.svg');
+	width: 20px;
+	height: 20px;
+	position: relative;
+	right: 0;
+	cursor: pointer;
+}
