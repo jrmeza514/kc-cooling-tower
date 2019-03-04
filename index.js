@@ -9,7 +9,7 @@ let HOUR = MINUTE * 60;
 
 var PORT = process.env.PORT || 8000;
 
-app.use( express.static( __dirname + "/dist/") );
+app.use( express.static( __dirname + "/v2/build/") );
 
 let airTower = [];
 let waterTower = [];
