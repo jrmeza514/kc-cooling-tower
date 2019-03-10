@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/static/media/baseline-delete-white-24px.c195ea9b.svg"
   },
   {
-    "revision": "476db377e4b3ac2dad21dbb6d7d50817",
+    "revision": "b1d8226cd909622df28709dca63abfca",
     "url": "/index.html"
   }
 ];
