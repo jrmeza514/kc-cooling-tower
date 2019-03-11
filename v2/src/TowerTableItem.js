@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {DateTime} from 'luxon';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -36,33 +37,16 @@ class TowerTableItem extends Component {
 		)
 	}
 	getTimeLeft(){
-		let SECOND = 1000;
-		let MINUTE = 60 * SECOND;
-		let HOUR = MINUTE * 60;
-		let DAY = HOUR * 24;
 		let exitTime = this.props.item.exitTime;
-		let now = Date.now() - 8 * HOUR;
+		let now = Date.now();
 		let timeLeft = exitTime - now;
 		return timeLeft;
 	}
 
 	formatDateTime(t){
-		let SECOND = 1000;
-		let MINUTE = 60 * SECOND;
-		let HOUR = MINUTE * 60;
-		let DAY = HOUR * 24;
-
-		let date = new Date();
-		date.setTime(t + 8 * HOUR);
-		let dstr = date.toLocaleDateString();
-		let hr = date.getHours();
-		let min = date.getMinutes();
-
-		if(hr < 10) hr = '0' + hr;
-		if(min < 10) min = '0' + min;
-
-		let v = dstr + ' ' +hr + ":" + min;
-		return v;
+		let date = DateTime.fromMillis(t);
+		let dstr = date.toISO().substr(0,16).replace('T', ' ');
+		return dstr;
 	}
 	formatTime( t ){
 		let SECOND = 1000;

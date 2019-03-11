@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
     <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+    <script src="./js/luxon.min.js" charset="utf-8"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -48,9 +49,9 @@
       let HOUR = MINUTE * 60;
       let DAY = HOUR * 24;
       /// Format yyyy-MM-ddThh:mm
-      let date = new Date(Date.now() - 8 * HOUR);
-      let dt = date.toISOString().substr(0,16).replace('T', ' ');
-      t.valueAsNumber = Date.now() - 8 * HOUR;
+      let lx = luxon.DateTime.local();
+      let dt = lx.toISO().substr(0,16).replace('T', ' ');
+      t.valueAsNumber = lx.ts;
 
       if (t.id == 'att') {
         $('#dtpatt').find('input').val( dt );
@@ -65,22 +66,9 @@
     }
 
     function formatDateTime(t){
-      let SECOND = 1000;
-      let MINUTE = 60 * SECOND;
-      let HOUR = MINUTE * 60;
-      let DAY = HOUR * 24;
-
-      let date = new Date();
-      date.setTime(t + 8 * HOUR);
-      let dstr = date.toLocaleDateString();
-      let hr = date.getHours();
-      let min = date.getMinutes();
-
-      if(hr < 10) hr = '0' + hr;
-      if(min < 10) min = '0' + min;
-
-      let v = dstr + ' ' +hr + ":" + min;
-      return v;
+      let dt = luxon.DateTime.fromMillis(t);
+      let dstr = dt.toISO().substr(0,16);
+      return dstr;
     }
     function formatTime( t ){
       let SECOND = 1000;
@@ -123,7 +111,9 @@
       });
 
       $('#dtpatt').on('dp.change', function(e){
-        att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
+        let dt = $('#dtpatt').find('input').val().replace(' ', 'T');
+        let lx = luxon.DateTime.fromISO(dt);
+        att.valueAsNumber = lx.toMillis();
       });
       $('#dtpatt').find('input').on('change', function(e){
         att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
@@ -133,7 +123,9 @@
         updateTimer(wtt);
       });
       $('#dtpwtt').on('dp.change', function(e){
-        wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
+        let dt = $('#dtpwtt').find('input').val().replace(' ', 'T');
+        let lx = luxon.DateTime.fromISO(dt);
+        wtt.valueAsNumber = lx.toMillis();
       });
 
       $('#dtpwtt').find('input').on('change', function(e){

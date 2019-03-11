@@ -27,32 +27,29 @@ class App extends Component {
 			isFormVisible: JSON.parse(localStorage.getItem('isFormVisible'))
 		};
 
-		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com');
+		this.socket = openSocket('localhost:8000');
 
-		let SOCKET_CALLBACKS = {};
-	  SOCKET_CALLBACKS.onReceiveAirTower = ( towerEntry ) => {
-	    this.addToTower(this.state.towers.AIR_TOWER, towerEntry);
-			this.setState(this.state);
-	  };
-		SOCKET_CALLBACKS.onReceiveWaterTower = ( towerEntry ) => {
-	    this.addToTower(this.state.towers.WATER_TOWER, towerEntry);
-			this.setState(this.state);
-	  };
-	  SOCKET_CALLBACKS.onLoadAirTower = ( airTower ) => {
+    this.socket.on( 'loadAirTower' , ( airTower ) => {
 			this.state.towers.AIR_TOWER = airTower;
 			console.log(this.state.towers.AIR_TOWER);
 			this.setState(this.state);
-	  };
-		SOCKET_CALLBACKS.onLoadWaterTower = ( waterTower ) => {
+	  });
+
+    this.socket.on( 'loadWaterTower' , ( waterTower ) => {
 			this.state.towers.WATER_TOWER = waterTower;
 			console.log(this.state.towers.WATER_TOWER);
 			this.setState(this.state);
-	  };
+	  });
 
-    this.socket.on( 'loadAirTower' , SOCKET_CALLBACKS.onLoadAirTower );
-    this.socket.on( 'loadWaterTower' , SOCKET_CALLBACKS.onLoadWaterTower );
-    this.socket.on( 'receiveAirTower', SOCKET_CALLBACKS.onReceiveAirTower );
-	  this.socket.on( 'receiveWaterTower', SOCKET_CALLBACKS.onReceiveWaterTower );
+    this.socket.on( 'receiveAirTower', ( towerEntry ) => {
+	    this.addToTower(this.state.towers.AIR_TOWER, towerEntry);
+			this.setState(this.state);
+	  });
+
+	  this.socket.on( 'receiveWaterTower', ( towerEntry ) => {
+	    this.addToTower(this.state.towers.WATER_TOWER, towerEntry);
+			this.setState(this.state);
+	  });
 	}
 
 	addToTower(tower, item){
