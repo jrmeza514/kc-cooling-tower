@@ -7,17 +7,13 @@ var server = http.createServer(app);
 var socket = io( server );
 let MINUTE = 60000;
 let HOUR = MINUTE * 60;
+const luxon = require('luxon');
 const JSON_FILE_SAVE = __dirname + '/saves/towers.json';
-const JSON_DELETED_SAVE = __dirname + '/saves/deleted.json';
 
 var PORT = process.env.PORT || 8000;
 
 app.use( express.static( __dirname + "/v2/build/") );
 
-let deleted = {
-  airTower: [],
-  waterTower: []
-}
 
 let towers = {
   airTower: [],
@@ -53,24 +49,19 @@ socket.on('connection', function( client ){
     switch (res.towerName) {
       case 'airTower':
         tower = towers.airTower;
-        dTower = deleted.airTower;
         trigger = 'loadAirTower';
         break;
       case 'waterTower':
         tower = towers.waterTower;
-        dTower = deleted.waterTower;
         trigger = 'loadWaterTower';
         break;
       default:
         break;
     }
     if (tower) {
-      let deleted = tower.splice(res.index, 1);
-      if (deleted.length > 100 ) {
-        deleted.shift();
-      }
-      dTower.push(deleted);
-      console.log(deleted);
+      let deleted = tower.splice(res.index, 1)[0];
+      addToLog(deleted);
+
       client.emit( trigger, tower);
       client.broadcast.emit(trigger, tower);
     }
@@ -145,24 +136,13 @@ function addToTower(tower, item){
 
 function saveTowersToJSON(){
   let json = JSON.stringify(towers);
-  let del = JSON.stringify(deleted);
 
   console.log(json);
   fs.writeFile(JSON_FILE_SAVE, json, 'utf8', (e) => {
     if (e && e.code == 'ENOENT') {
       createSavesFolder();
+      saveTowersToJSON();
     }
-
-    console.log(`${JSON_FILE_SAVE} SAVED`);
-  });
-
-  console.log(deleted);
-  fs.writeFile(JSON_DELETED_SAVE, del, 'utf8', (e) => {
-    if (e && e.code == 'ENOENT') {
-      createSavesFolder();
-    }
-
-    console.log(`${JSON_DELETED_SAVE} SAVED`);
   });
 }
 
@@ -171,17 +151,31 @@ function loadJSON(){
     if (err){
         console.log(err);
     } else {
-    towers = JSON.parse(data);
+      towers = JSON.parse(data);
+    }
+  });
+}
 
-  }});
+function addToLog( deleted ){
+  let lx = luxon.DateTime.fromMillis(deleted.time);
+  let date = lx.toLocaleString().split('/').join('-');
+  let logFile = __dirname + '/saves/' + date + '-log.json';
+  let log = [];
 
-  fs.readFile( JSON_DELETED_SAVE, 'utf8', function readFileCallback(err, data){
+  fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
     if (err){
         console.log(err);
     } else {
-    deleted = JSON.parse(data);
-
-  }});
+      log = JSON.parse(data);
+    }
+    log.push(deleted);
+    fs.writeFile(logFile, JSON.stringify(log), 'utf8', (e) => {
+      if (e && e.code == 'ENOENT') {
+        createSavesFolder();
+      }
+      console.log(`${logFile} SAVED`);
+    });
+  });
 }
 
 function createSavesFolder(){

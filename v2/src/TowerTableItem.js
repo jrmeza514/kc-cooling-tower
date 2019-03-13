@@ -25,7 +25,7 @@ class TowerTableItem extends Component {
 			timeLeft: this.getTimeLeft()
 		};
 		return (
-			<div className={this.state.timeLeft <= 0 ? 'listItem outOfTime' : 'listItem'}>
+			<div className={this.state.timeLeft <= 5 * 60000 ? 'listItem outOfTime' : 'listItem'}>
 				<div className='wo'>{this.props.item.wo}</div>
 				<div className="pid">{this.props.item.pid}</div>
 				<div className="desc">{this.props.item.desc}</div>
