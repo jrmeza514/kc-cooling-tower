@@ -9,7 +9,7 @@ var socket = io( server );
 let MINUTE = 60000;
 let HOUR = MINUTE * 60;
 const luxon = require('luxon');
-const JSON_FILE_SAVE = __dirname + '/../saves/towers.json';
+const JSON_FILE_SAVE = __dirname + '/saves/towers.json';
 
 var PORT = process.env.PORT || 8000;
 
@@ -18,7 +18,7 @@ const router = express.Router();
 
 router.get('/:logDate', (req, res) => {
   console.log(req.params)
-  let logFile = __dirname + '/../saves/' + req.params.logDate + '-log.json';
+  let logFile = __dirname + '/saves/' + req.params.logDate + '-log.json';
   fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
     if (err){
         res.send(err);
@@ -122,9 +122,9 @@ function getTimeLeft( item ){
 	return timeLeft;
 }
 function addToTower(tower, item){
+  addToLog(JSON.parse(JSON.stringify(item)));
 	if (tower.length == 0 ) {
 		tower.push(item);
-    addToLog(JSON.parse(JSON.stringify(item)));
     saveTowersToJSON();
 		return;
 	}
@@ -181,7 +181,7 @@ function addToLog( item ){
   item.time = luxon.DateTime.fromMillis(item.time).toISO().substr(0,16).replace('T', ' ');
   item.exitTime = luxon.DateTime.fromMillis(item.exitTime).toISO().substr(0,16).replace('T', ' ');
   let date = lx.toLocaleString().split('/').join('-');
-  let logFile = __dirname + '/../saves/' + date + '-log.json';
+  let logFile = __dirname + '/saves/' + date + '-log.json';
   let log = [];
 
   fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
@@ -201,8 +201,8 @@ function addToLog( item ){
 }
 
 function createSavesFolder(){
-  if (!fs.existsSync('/../saves')){
-      fs.mkdirSync('/../saves');
+  if (!fs.existsSync('/saves')){
+      fs.mkdirSync('/saves');
   }
 }
 server.listen( PORT );

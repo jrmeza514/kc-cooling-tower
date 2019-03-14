@@ -26,6 +26,7 @@ class App extends Component {
 		};
 
 		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
+		// this.socket = openSocket('http://localhost:8000/');
 
     this.socket.on( 'loadAirTower' , ( airTower ) => {
 			this.setState({
