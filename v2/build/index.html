@@ -1,0 +1,103 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Cooling Tower Log</title><link rel="icon" href="./img/soup-ladle.png"><meta name="viewport" content="width=device-width,user-scalable=no"><meta name="mobile-web-app-capable" content="yes"><link rel="stylesheet" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><link href="./css/dts.css" rel="stylesheet"><script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script><script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script><script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script><script src="./js/luxon.min.js" charset="utf-8"></script><link href="/static/css/main.e6c7a7a4.chunk.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script async>jQuery(function () {
+      jQuery('#dtpwtt').datetimepicker({
+        format : 'YYYY-MM-DD HH:mm'
+      });
+
+      jQuery('#dtpatt').datetimepicker({
+        format : 'YYYY-MM-DD HH:mm'
+      });
+    });
+
+
+    String.prototype.replaceAt=function(index, replacement) {
+      return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+    }
+    function updateTimer( t ){
+      let SECOND = 1000;
+      let MINUTE = 60 * SECOND;
+      let HOUR = MINUTE * 60;
+      let DAY = HOUR * 24;
+      /// Format yyyy-MM-ddThh:mm
+      let lx = luxon.DateTime.local();
+      let dt = lx.toISO().substr(0,16).replace('T', ' ');
+      t.valueAsNumber = lx.ts;
+
+      if (t.id == 'att') {
+        $('#dtpatt').find('input').val( dt );
+      }else if (t.id == 'wtt'){
+        $('#dtpwtt').find('input').val( dt );
+      }
+      console.log(dt);
+    }
+
+    function updateTimerEvent( e ){
+      updateTimer(event.target);
+    }
+
+    function formatDateTime(t){
+      let dt = luxon.DateTime.fromMillis(t);
+      let dstr = dt.toISO().substr(0,16);
+      return dstr;
+    }
+    function formatTime( t ){
+      let SECOND = 1000;
+      let MINUTE = 60 * SECOND;
+      let HOUR = MINUTE * 60;
+      let DAY = HOUR * 24;
+
+
+      let mins = t / MINUTE;
+      let hrs = mins / 60;;
+      let secs = t / SECOND;
+      let hr = Math.floor(hrs);
+      let min = Math.floor((hrs - hr) * 60);
+      let sec = Math.floor(secs % 60);
+      if(hr < 10) hr = '0' + hr;
+      if(min < 10) min = '0' + min;
+      if (sec < 10) sec = '0' + sec;
+      let v = hr + ":" + min + ':' + sec;
+      return v;
+    }
+
+    function getTime(){
+      var d = new Date(),
+      h = d.getHours(),
+      m = d.getMinutes();
+      if(h < 10) h = '0' + h;
+      if(m < 10) m = '0' + m;
+      let v = h + ":" + m;
+      return v;
+    }
+
+    $(document).ready(() => {
+      let att = document.getElementById('att');
+      let wtt = document.getElementById('wtt');
+      updateTimer(att);
+      updateTimer(wtt);
+
+      $('#dtpatt').find('input').focus(function(){
+        updateTimer(att);
+      });
+
+      $('#dtpatt').on('dp.change', function(e){
+        let dt = $('#dtpatt').find('input').val().replace(' ', 'T');
+        let lx = luxon.DateTime.fromISO(dt);
+        att.valueAsNumber = lx.toMillis();
+      });
+      $('#dtpatt').find('input').on('change', function(e){
+        att.value = $('#dtpatt').find('input').val().replace(' ', 'T');
+      });
+
+      $('#dtpwtt').find('input').focus(function(){
+        updateTimer(wtt);
+      });
+      $('#dtpwtt').on('dp.change', function(e){
+        let dt = $('#dtpwtt').find('input').val().replace(' ', 'T');
+        let lx = luxon.DateTime.fromISO(dt);
+        wtt.valueAsNumber = lx.toMillis();
+      });
+
+      $('#dtpwtt').find('input').on('change', function(e){
+        wtt.value = $('#dtpwtt').find('input').val().replace(' ', 'T');
+      });
+    });</script><script>!function(l){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],f=0,i=[];f<n.length;f++)t=n[f],p[t]&&i.push(p[t][0]),p[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(l[r]=o[r]);for(s&&s(e);i.length;)i.shift()();return c.push.apply(c,u||[]),a()}function a(){for(var e,r=0;r<c.length;r++){for(var t=c[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==p[u]&&(n=!1)}n&&(c.splice(r--,1),e=f(f.s=t[0]))}return e}var t={},p={1:0},c=[];function f(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return l[e].call(r.exports,r,r.exports,f),r.l=!0,r.exports}f.m=l,f.c=t,f.d=function(e,r,t){f.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},f.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},f.t=function(r,e){if(1&e&&(r=f(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(f.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)f.d(t,n,function(e){return r[e]}.bind(null,n));return t},f.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return f.d(r,"a",r),r},f.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},f.p="/";var r=window.webpackJsonp=window.webpackJsonp||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var s=n;a()}([])</script><script src="/static/js/2.5facbd61.chunk.js"></script><script src="/static/js/main.615432dc.chunk.js"></script></body></html>

@@ -25,7 +25,7 @@ class App extends Component {
 			isFormVisible: JSON.parse(localStorage.getItem('isFormVisible'))
 		};
 
-		this.socket = openSocket('http://localhost:8000');
+		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
 
     this.socket.on( 'loadAirTower' , ( airTower ) => {
 			this.setState({

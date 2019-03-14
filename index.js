@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
 });
 
 app.use('/logs', router);
-app.use( express.static( __dirname + "/v2/build/") );
+app.use( '/', express.static( __dirname + "/v2/build/") );
 
 
 let towers = {
