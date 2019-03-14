@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './css/App.css';
 import AppHeader from './AppHeader';
-import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import TowerForms from './TowerForms';
 import TowerTables from './TowerTables';
@@ -27,16 +25,26 @@ class App extends Component {
 			isFormVisible: JSON.parse(localStorage.getItem('isFormVisible'))
 		};
 
-		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com');
+		this.socket = openSocket('http://localhost:8000');
 
     this.socket.on( 'loadAirTower' , ( airTower ) => {
-			this.state.towers.AIR_TOWER = airTower;
+			this.setState({
+				towers: {
+					WATER_TOWER: this.state.towers.WATER_TOWER,
+					AIR_TOWER: airTower
+				}
+			});
 			console.log(this.state.towers.AIR_TOWER);
 			this.setState(this.state);
 	  });
 
     this.socket.on( 'loadWaterTower' , ( waterTower ) => {
-			this.state.towers.WATER_TOWER = waterTower;
+			this.setState({
+				towers: {
+					WATER_TOWER: waterTower,
+					AIR_TOWER: this.state.towers.AIR_TOWER
+				}
+			});
 			console.log(this.state.towers.WATER_TOWER);
 			this.setState(this.state);
 	  });
@@ -53,14 +61,14 @@ class App extends Component {
 	}
 
 	addToTower(tower, item){
-		if (tower.length == 0 ) {
+		if (tower.length === 0 ) {
 			tower.push(item);
 			return;
 		}
 		if (item.time >= tower[tower.length - 1].time) {
 			tower.push(item);
 		}
-		if (tower.length == 1 ) {
+		if (tower.length === 1 ) {
 			if (tower[0].time < item.time) {
 				tower.push(item);
 			}else {
@@ -84,9 +92,9 @@ class App extends Component {
 
 	deleteEntry(i, tower){
     let t = null;
-    if (tower == 'waterTower') {
+    if (tower === 'waterTower') {
       t = this.state.towers.WATER_TOWER;
-    }else if( tower == 'airTower'){
+    }else if( tower === 'airTower'){
       t = this.state.towers.AIR_TOWER;
     }
 

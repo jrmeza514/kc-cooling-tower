@@ -2,16 +2,37 @@ var http = require('http');
 var express = require('express');
 var fs = require('fs');
 var io = require('socket.io');
+var bodyParser = require('body-parser');
 var app = express();
 var server = http.createServer(app);
 var socket = io( server );
 let MINUTE = 60000;
 let HOUR = MINUTE * 60;
 const luxon = require('luxon');
-const JSON_FILE_SAVE = __dirname + '/saves/towers.json';
+const JSON_FILE_SAVE = __dirname + '/../saves/towers.json';
 
 var PORT = process.env.PORT || 8000;
 
+
+const router = express.Router();
+
+router.get('/:logDate', (req, res) => {
+  console.log(req.params)
+  let logFile = __dirname + '/../saves/' + req.params.logDate + '-log.json';
+  fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
+    if (err){
+        res.send(err);
+    } else {
+      res.send(data);
+    }
+  });
+});
+
+router.get('/', (req, res) => {
+  res.sendFile(__dirname + '/v2/log_viewer/index.html');
+});
+
+app.use('/logs', router);
 app.use( express.static( __dirname + "/v2/build/") );
 
 
@@ -60,8 +81,6 @@ socket.on('connection', function( client ){
     }
     if (tower) {
       let deleted = tower.splice(res.index, 1)[0];
-      addToLog(deleted);
-
       client.emit( trigger, tower);
       client.broadcast.emit(trigger, tower);
     }
@@ -105,6 +124,7 @@ function getTimeLeft( item ){
 function addToTower(tower, item){
 	if (tower.length == 0 ) {
 		tower.push(item);
+    addToLog(JSON.parse(JSON.stringify(item)));
     saveTowersToJSON();
 		return;
 	}
@@ -156,10 +176,12 @@ function loadJSON(){
   });
 }
 
-function addToLog( deleted ){
-  let lx = luxon.DateTime.fromMillis(deleted.time);
+function addToLog( item ){
+  let lx = luxon.DateTime.fromMillis(item.time);
+  item.time = luxon.DateTime.fromMillis(item.time).toISO().substr(0,16).replace('T', ' ');
+  item.exitTime = luxon.DateTime.fromMillis(item.exitTime).toISO().substr(0,16).replace('T', ' ');
   let date = lx.toLocaleString().split('/').join('-');
-  let logFile = __dirname + '/saves/' + date + '-log.json';
+  let logFile = __dirname + '/../saves/' + date + '-log.json';
   let log = [];
 
   fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
@@ -168,7 +190,7 @@ function addToLog( deleted ){
     } else {
       log = JSON.parse(data);
     }
-    log.push(deleted);
+    log.push(item);
     fs.writeFile(logFile, JSON.stringify(log), 'utf8', (e) => {
       if (e && e.code == 'ENOENT') {
         createSavesFolder();
@@ -179,8 +201,8 @@ function addToLog( deleted ){
 }
 
 function createSavesFolder(){
-  if (!fs.existsSync('./saves')){
-      fs.mkdirSync('./saves');
+  if (!fs.existsSync('/../saves')){
+      fs.mkdirSync('/../saves');
   }
 }
 server.listen( PORT );

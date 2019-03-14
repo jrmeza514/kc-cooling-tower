@@ -1,9 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
 import './css/TowerForm.css';
 
 class TowerForm extends Component{
@@ -49,8 +44,6 @@ class TowerForm extends Component{
 	send(){
 		let SECOND = 1000;
 		let MINUTE = 60 * SECOND;
-		let HOUR = MINUTE * 60;
-		let DAY = HOUR * 24;
 
 		let wo = document.getElementById(this.props.towerPrefix + 'wo');
 		let pid = document.getElementById(this.props.towerPrefix + 'pid');
@@ -65,7 +58,7 @@ class TowerForm extends Component{
 			exitTime: tt.valueAsNumber + (120 * MINUTE)
 		}
 
-		if (this.props.towerPrefix == 'at') {
+		if (this.props.towerPrefix === 'at') {
 			entry.exitTime = tt.valueAsNumber + (125 * MINUTE);
 		}
 

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>
+			Log Viewer
+		</title>
+
+		<script src="./js/luxon.min.js" charset="utf-8"></script>
+		<script src="http://danml.com/js/download.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/json2csv"></script>
+	</head>
+	<body>
+		<input id="date" type="date" name="date" value="" format="mm-dd-yyyy">
+		<button id="submit" type="button" name="button" onclick="seeLog()">See Log</button>
+		<button id="export" type="button" name="button" onclick="exportFile()">Export</button>
+		<table>
+			<thead>
+				<tr>
+					<th>WO #</td>
+					<th>PID</td>
+					<th>Product Description</td>
+					<th>Start Time</td>
+					<th>Time Out</td>
+				</tr>
+			</thead>
+			<tbody id="tableBody">
+
+			</tbody>
+		</table>
+
+		<script type="text/javascript">
+		let tbEl = document.getElementById('tableBody');
+		let dateEl = document.getElementById('date');
+		let today = new Date();
+		let value = today.getFullYear() + '-' + ( today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1 ) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate() );
+		dateEl.value = value;
+
+		function seeLog(){
+			let dt = dateEl.value;
+			if (!dt) {
+				return;
+			}
+			let year = dt.substr(0,4);
+			let month = dt.substr(5,2);
+			let date = dt.substr(8,2);
+			if (month.charAt(0) === '0') {
+				month = month.charAt(1);
+			}
+
+			if (date.charAt(0) === '0') {
+				date = date.charAt(1);
+			}
+
+			let str = month + '-' + date + '-' + year;
+
+			let logFilePath = './logs/' + str;
+
+			fetch(logFilePath)
+			.then(res => {
+				return res.json()
+			})
+			.then(json => {
+				if (!json.code) {
+					console.log(json);
+					clearTable();
+					loadTable(json);
+				}
+				else {
+					clearTable();
+				}
+			})
+
+		}
+
+		function exportFile(){
+			let dt = dateEl.value;
+			if (!dt) {
+				return;
+			}
+			let year = dt.substr(0,4);
+			let month = dt.substr(5,2);
+			let date = dt.substr(8,2);
+			if (month.charAt(0) === '0') {
+				month = month.charAt(1);
+			}
+
+			if (date.charAt(0) === '0') {
+				date = date.charAt(1);
+			}
+
+			let str = month + '-' + date + '-' + year;
+
+			let logFilePath = './logs/' + str;
+
+			fetch(logFilePath)
+			.then(res => {
+				return res.json()
+			})
+			.then(json => {
+				if (!json.code) {
+					let csv = json2csv.parse(json).replace('wo', "Work Order #").replace('pid', "Product ID").replace('desc', "Product Name").replace('time', "Time In").replace('exitTime', "Time Out");
+					download(csv, str + '-log.csv', 'text/csv');
+				}
+			})
+
+		}
+
+		function loadTable( json ){
+			for (var i = 0; i < json.length; i++) {
+				let x = json[i];
+				let tr = document.createElement('tr');
+
+				let wo = document.createElement('td');
+				wo.innerText = x.wo;
+				let pid = document.createElement('td');
+				pid.innerText = x.pid;
+				let desc = document.createElement('td');
+				desc.innerText = x.desc;
+				let start = document.createElement('td');
+				start.innerText = x.time;
+				let out = document.createElement('td');
+				out.innerText = x.exitTime;
+
+
+				tr.appendChild(wo);
+				tr.appendChild(pid);
+				tr.appendChild(desc);
+				tr.appendChild(start);
+				tr.appendChild(out);
+
+				tbEl.appendChild(tr);
+			}
+		}
+
+		function clearTable(){
+			tbEl.innerHTML = "";
+		}
+		</script>
+	</body>
+</html>
