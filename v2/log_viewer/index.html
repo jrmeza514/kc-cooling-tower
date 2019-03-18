@@ -7,7 +7,7 @@
 		</title>
 
 		<script src="../js/luxon.min.js" charset="utf-8"></script>
-		<script src="http://danml.com/js/download.js"></script>
+		<script src="../js/download.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/json2csv"></script>
 	</head>
 	<body>
@@ -119,8 +119,12 @@
 			})
 			.then(json => {
 				if (!json.code) {
-					let csv = json2csv.parse(json).replace('wo', "Work Order #").replace('pid', "Product ID").replace('desc', "Product Name").replace('time', "Time In").replace('exitTime', "Time Out");
-					download(csv, str + '-log.csv', 'text/csv');
+					let data = json.airTower.concat(json.waterTower);
+					console.log(data);
+					if (date.length > 0) {
+						let csv = json2csv.parse(data).replace('wo', "Work Order #").replace('pid', "Product ID").replace('desc', "Product Name").replace('time', "Time In").replace('exitTime', "Time Out");
+						download(csv, str + '-log.csv', 'text/csv');
+					}
 				}
 			})
 
