@@ -20,8 +20,8 @@ const PORT = process.env.PORT || 8000;
 
 router.get('/:logDate', (req, res) => {
   console.log(req.params)
-  let wlog = req.params.logDate + `-WATER_TOWER-log.json`;
-  let alog = req.params.logDate + `-AIR_TOWER-log.json`;
+  let wlog = req.params.logDate + `-WATER_TOWER-log`;
+  let alog = req.params.logDate + `-AIR_TOWER-log`;
 
   DBManager.getLog(wlog, (res1) => {
     console.log(res1);

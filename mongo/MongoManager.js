@@ -1,4 +1,4 @@
-const MONGODB_URI = "mongodb://heroku_7t9tzmh9:qbfp6lrquf5ou7uuhvi516pnn1@ds047305.mlab.com:47305/heroku_7t9tzmh9";
+const MONGODB_URI = " mongodb+srv://jrmeza514:eOvRE08VknB7iJ5c@cluster0-dmufo.mongodb.net/test?retryWrites=true";
 const MongoClient = require('mongodb').MongoClient;
 const luxon = require('luxon');
 
@@ -7,7 +7,7 @@ class MongoManager {
 
 	addAirTower(item){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('cooling-tower');
 			db.collection('AIR_TOWER').insertOne(item)
 			.then(result => {
 				client.close();
@@ -17,7 +17,7 @@ class MongoManager {
 
 	addToWaterTower(item){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('cooling-tower');
 			db.collection('WATER_TOWER').insertOne(item)
 			.then(result => {
 				client.close();
@@ -27,7 +27,7 @@ class MongoManager {
 
 	getAirTower(c){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('cooling-tower');
 			db.collection('AIR_TOWER').find({})
 			.toArray((err, res) => {
 				if (err) throw err;
@@ -39,7 +39,7 @@ class MongoManager {
 
 	getWaterTower(c){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('cooling-tower');
 			db.collection('WATER_TOWER').find({})
 			.toArray((err, res) => {
 				if (err) throw err;
@@ -51,7 +51,7 @@ class MongoManager {
 
 	deleteFromAirTower(item){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('cooling-tower');
 			db.collection('AIR_TOWER').deleteOne({
 				_id: item._id
 			});
@@ -61,7 +61,7 @@ class MongoManager {
 
 	deleteFromWaterTower(item){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('cooling-tower');
 			db.collection('WATER_TOWER').deleteOne({
 				_id: item._id
 			});
@@ -74,11 +74,11 @@ class MongoManager {
 	  item.time = luxon.DateTime.fromMillis(item.time).toISO().substr(0,16).replace('T', ' ');
 	  item.exitTime = luxon.DateTime.fromMillis(item.exitTime).toISO().substr(0,16).replace('T', ' ');
 	  let date = lx.toLocaleString().split('/').join('-');
-	  let logName = date + `-${towerName}-log.json`;
+	  let logName = date + `-${towerName}-log`;
 
 
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('logs');
 			db.collection(logName).insertOne(item)
 			.then(result => {
 				client.close();
@@ -91,7 +91,7 @@ class MongoManager {
 
 	getLog(logName, c){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
-			let db = client.db('heroku_7t9tzmh9');
+			let db = client.db('logs');
 			db.collection(logName).find({})
 			.toArray((err, res) => {
 				if (err) throw err;
