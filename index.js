@@ -3,18 +3,21 @@ var express = require('express');
 var fs = require('fs');
 var io = require('socket.io');
 var bodyParser = require('body-parser');
+var MongoManager = require('./mongo/MongoManager.js');
+const luxon = require('luxon');
+
+
 var app = express();
 var server = http.createServer(app);
 var socket = io( server );
-let MINUTE = 60000;
-let HOUR = MINUTE * 60;
-const luxon = require('luxon');
-const JSON_FILE_SAVE = __dirname + '/saves/towers.json';
-
-var PORT = process.env.PORT || 8000;
-
-
 const router = express.Router();
+const DBManager = new MongoManager();
+
+const MINUTE = 60000;
+const HOUR = MINUTE * 60;
+const JSON_FILE_SAVE = __dirname + '/saves/towers.json';
+const PORT = process.env.PORT || 8000;
+
 
 router.get('/:logDate', (req, res) => {
   console.log(req.params)
@@ -40,25 +43,23 @@ let towers = {
   airTower: [],
   waterTower: []
 }
-loadJSON();
 
 socket.on('connection', function( client ){
-  /*
-    Send the client confirmation of a successful connection
-  */
+  loadDBData(client);
   client.emit('connected');
+
 
 	client.emit('loadAirTower', towers.airTower);
 	client.emit('loadWaterTower', towers.waterTower);
 
 	client.on('airTower', function(towerEntry){
-		addToTower(towers.airTower, towerEntry);
-		client.emit('receiveAirTower', towerEntry );
+		addToTower(towers.airTower, towerEntry, 'AIR_TOWER');
+		client.emit('receiveAirTower', towerEntry);
     client.broadcast.emit('receiveAirTower', towerEntry );
 	});
 
 	client.on('waterTower', function(towerEntry){
-		addToTower(towers.waterTower, towerEntry);
+		addToTower(towers.waterTower, towerEntry, 'WATER_TOWER');
 		client.emit('receiveWaterTower', towerEntry );
     client.broadcast.emit('receiveWaterTower', towerEntry );
 	});
@@ -83,30 +84,12 @@ socket.on('connection', function( client ){
       let deleted = tower.splice(res.index, 1)[0];
       client.emit( trigger, tower);
       client.broadcast.emit(trigger, tower);
+
+      if(res.towerName == 'airTower') DBManager.deleteFromAirTower(deleted);
+      if(res.towerName == 'waterTower') DBManager.deleteFromWaterTower(deleted);
     }
 
-    saveTowersToJSON();
   });
-	// setInterval(function(){
-	// 	timeAudit(airTower, 'loadAirTower');
-	// 	timeAudit(waterTower, 'loadWaterTower');
-  //   console.log('audit');
-	// }, 30000);
-
-	function timeAudit( tower , trigger){
-		for (let i =0; i < tower.length; i++){
-			let item = tower[i];
-			let timeLeft = getTimeLeft(item);
-
-			if (timeLeft < -5 * MINUTE){
-
-				let deletedItem = tower.splice( i, 1);
-				console.log(`Deleted Entry: ${deletedItem}`);
-        client.emit( trigger, tower);
-        client.broadcast.emit(trigger, tower);
-			}
-		}
-	}
 });
 
 function getTimeAsNumber(){
@@ -121,11 +104,12 @@ function getTimeLeft( item ){
 
 	return timeLeft;
 }
-function addToTower(tower, item){
-  addToLog(JSON.parse(JSON.stringify(item)));
+function addToTower(tower, item, towerName){
+  addToLog(item, towerName);
+
 	if (tower.length == 0 ) {
 		tower.push(item);
-    saveTowersToJSON();
+    saveToTower(tower, item, towerName);
 		return;
 	}
 
@@ -139,7 +123,7 @@ function addToTower(tower, item){
 		}else {
 			tower.unshift(item);
 		}
-    saveTowersToJSON();
+    saveToTower(tower, item, towerName);
 		return;
 	}
 
@@ -151,58 +135,35 @@ function addToTower(tower, item){
 		}
 	}
 
-  saveTowersToJSON();
+  saveToTower(tower, item, towerName);
 }
 
-function saveTowersToJSON(){
-  let json = JSON.stringify(towers);
-
-  console.log(json);
-  fs.writeFile(JSON_FILE_SAVE, json, 'utf8', (e) => {
-    if (e && e.code == 'ENOENT') {
-      createSavesFolder();
-      saveTowersToJSON();
-    }
-  });
-}
-
-function loadJSON(){
-  fs.readFile( JSON_FILE_SAVE, 'utf8', function readFileCallback(err, data){
-    if (err){
-        console.log(err);
-    } else {
-      towers = JSON.parse(data);
-    }
-  });
-}
-
-function addToLog( item ){
-  let lx = luxon.DateTime.fromMillis(item.time);
-  item.time = luxon.DateTime.fromMillis(item.time).toISO().substr(0,16).replace('T', ' ');
-  item.exitTime = luxon.DateTime.fromMillis(item.exitTime).toISO().substr(0,16).replace('T', ' ');
-  let date = lx.toLocaleString().split('/').join('-');
-  let logFile = __dirname + '/saves/' + date + '-log.json';
-  let log = [];
-
-  fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
-    if (err){
-        console.log(err);
-    } else {
-      log = JSON.parse(data);
-    }
-    log.push(item);
-    fs.writeFile(logFile, JSON.stringify(log), 'utf8', (e) => {
-      if (e && e.code == 'ENOENT') {
-        createSavesFolder();
-      }
-      console.log(`${logFile} SAVED`);
-    });
-  });
-}
-
-function createSavesFolder(){
-  if (!fs.existsSync('/saves')){
-      fs.mkdirSync('/saves');
+function saveToTower(tower, item, towerName){
+  switch (towerName) {
+  case 'WATER_TOWER':
+    DBManager.addToWaterTower(item);
+    break;
+  case 'AIR_TOWER':
+    DBManager.addAirTower(item);
+    break;
+  default:
+    break;
   }
+}
+
+function loadDBData(client){
+  DBManager.getAirTower(res => {
+    towers.airTower = res;
+    client.emit('loadAirTower', towers.airTower);
+  });
+
+  DBManager.getWaterTower(res => {
+    towers.waterTower = res;
+  	client.emit('loadWaterTower', towers.waterTower);
+  });
+}
+
+function addToLog(item, towerName){
+  DBManager.addToLog(JSON.parse(JSON.stringify(item)), towerName);
 }
 server.listen( PORT );
