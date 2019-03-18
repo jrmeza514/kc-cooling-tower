@@ -1,4 +1,4 @@
-const MONGODB_URI = " mongodb+srv://jrmeza514:eOvRE08VknB7iJ5c@cluster0-dmufo.mongodb.net/test?retryWrites=true";
+const MONGODB_URI = "mongodb+srv://jrmeza514:eOvRE08VknB7iJ5c@cluster0-dmufo.mongodb.net/test?retryWrites=true";
 const MongoClient = require('mongodb').MongoClient;
 const luxon = require('luxon');
 
