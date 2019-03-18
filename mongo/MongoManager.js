@@ -70,7 +70,7 @@ class MongoManager {
 	}
 
 	addToLog(item, towerName){
-		let lx = luxon.DateTime.fromMillis(item.time);
+		let lx = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles');
 	  item.time = luxon.DateTime.fromMillis(item.time).toISO().substr(0,16).replace('T', ' ');
 	  item.exitTime = luxon.DateTime.fromMillis(item.exitTime).toISO().substr(0,16).replace('T', ' ');
 	  let date = lx.toLocaleString().split('/').join('-');
