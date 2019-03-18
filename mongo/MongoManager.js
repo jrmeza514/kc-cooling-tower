@@ -88,6 +88,18 @@ class MongoManager {
 			});
 		});
 	}
+
+	getLog(logName, c){
+		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
+			let db = client.db('heroku_7t9tzmh9');
+			db.collection(logName).find({})
+			.toArray((err, res) => {
+				if (err) throw err;
+				c(res);
+			});
+			client.close();
+		});
+	}
 }
 
 module.exports = MongoManager;

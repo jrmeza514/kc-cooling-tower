@@ -6,7 +6,7 @@
 			Log Viewer
 		</title>
 
-		<script src="./js/luxon.min.js" charset="utf-8"></script>
+		<script src="../js/luxon.min.js" charset="utf-8"></script>
 		<script src="http://danml.com/js/download.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/json2csv"></script>
 	</head>
@@ -14,6 +14,7 @@
 		<input id="date" type="date" name="date" value="" format="mm-dd-yyyy">
 		<button id="submit" type="button" name="button" onclick="seeLog()">See Log</button>
 		<button id="export" type="button" name="button" onclick="exportFile()">Export</button>
+		<h1>Air Tower</h1>
 		<table>
 			<thead>
 				<tr>
@@ -24,13 +25,28 @@
 					<th>Time Out</td>
 				</tr>
 			</thead>
-			<tbody id="tableBody">
+			<tbody id="tableBody1">
+
+			</tbody>
+		</table>
+
+		<h1>Water Tower</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>WO #</td>
+					<th>PID</td>
+					<th>Product Description</td>
+					<th>Start Time</td>
+					<th>Time Out</td>
+				</tr>
+			</thead>
+			<tbody id="tableBody2">
 
 			</tbody>
 		</table>
 
 		<script type="text/javascript">
-		let tbEl = document.getElementById('tableBody');
 		let dateEl = document.getElementById('date');
 		let today = new Date();
 		let value = today.getFullYear() + '-' + ( today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1 ) + '-' + (today.getDate() < 10 ? '0' + today.getDate() : today.getDate() );
@@ -63,11 +79,15 @@
 			.then(json => {
 				if (!json.code) {
 					console.log(json);
-					clearTable();
-					loadTable(json);
+					clearTable1();
+					clearTable2();
+
+					loadTable(json.airTower, "tableBody1");
+					loadTable(json.waterTower, "tableBody2");
 				}
 				else {
-					clearTable();
+					clearTable1();
+					clearTable2();
 				}
 			})
 
@@ -106,7 +126,8 @@
 
 		}
 
-		function loadTable( json ){
+		function loadTable( json , id){
+			let tbEl = document.getElementById(id);
 			for (var i = 0; i < json.length; i++) {
 				let x = json[i];
 				let tr = document.createElement('tr');
@@ -133,7 +154,12 @@
 			}
 		}
 
-		function clearTable(){
+		function clearTable1(){
+			let tbEl = document.getElementById('tableBody1');
+			tbEl.innerHTML = "";
+		}
+		function clearTable2(){
+			let tbEl = document.getElementById('tableBody2');
 			tbEl.innerHTML = "";
 		}
 		</script>

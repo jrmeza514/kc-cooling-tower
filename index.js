@@ -15,19 +15,23 @@ const DBManager = new MongoManager();
 
 const MINUTE = 60000;
 const HOUR = MINUTE * 60;
-const JSON_FILE_SAVE = __dirname + '/saves/towers.json';
 const PORT = process.env.PORT || 8000;
 
 
 router.get('/:logDate', (req, res) => {
   console.log(req.params)
-  let logFile = __dirname + '/saves/' + req.params.logDate + '-log.json';
-  fs.readFile(logFile , 'utf8', function readFileCallback(err, data){
-    if (err){
-        res.send(err);
-    } else {
-      res.send(data);
-    }
+  let wlog = req.params.logDate + `-WATER_TOWER-log.json`;
+  let alog = req.params.logDate + `-AIR_TOWER-log.json`;
+
+  DBManager.getLog(wlog, (res1) => {
+    console.log(res1);
+    DBManager.getLog(alog, (res2) => {
+      console.log(res2);
+      res.send({
+        airTower: res2,
+        waterTower: res1
+      });
+    });
   });
 });
 
