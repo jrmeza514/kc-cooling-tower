@@ -18,6 +18,16 @@ const HOUR = MINUTE * 60;
 const PORT = process.env.PORT || 8000;
 
 
+
+
+router.get('/', (req, res) => {
+  res.sendFile(__dirname + '/v2/log_viewer/index.html');
+});
+
+router.get('/css/main.css', (req, res) => {
+  res.sendFile(__dirname + '/v2/log_viewer/css/main.css');
+});
+
 router.get('/:logDate', (req, res) => {
   console.log(req.params)
   let wlog = req.params.logDate + `-WATER_TOWER-log`;
@@ -33,10 +43,6 @@ router.get('/:logDate', (req, res) => {
       });
     });
   });
-});
-
-router.get('/', (req, res) => {
-  res.sendFile(__dirname + '/v2/log_viewer/index.html');
 });
 
 app.use('/logs', router);

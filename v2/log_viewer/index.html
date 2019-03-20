@@ -9,18 +9,19 @@
 		<script src="../js/luxon.min.js" charset="utf-8"></script>
 		<script src="../js/download.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/json2csv"></script>
+		<link rel="stylesheet" href="./logs/css/main.css">
 	</head>
 	<body>
 		<input id="date" type="date" name="date" value="" format="mm-dd-yyyy">
-		<button id="submit" type="button" name="button" onclick="seeLog()">See Log</button>
-		<button id="export" type="button" name="button" onclick="exportFile()">Export</button>
+		<button id="submit" type="button" name="button" onclick="seeLog()" class="btn">See Log</button>
+		<button id="export" type="button" name="button" onclick="exportFile()" class="btn">Export</button>
 		<h1>Air Tower</h1>
 		<table>
 			<thead>
 				<tr>
 					<th>WO #</td>
 					<th>PID</td>
-					<th>Product Description</td>
+					<th>Description</td>
 					<th>Start Time</td>
 					<th>Time Out</td>
 				</tr>
@@ -36,7 +37,7 @@
 				<tr>
 					<th>WO #</td>
 					<th>PID</td>
-					<th>Product Description</td>
+					<th>Description</td>
 					<th>Start Time</td>
 					<th>Time Out</td>
 				</tr>
