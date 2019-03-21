@@ -12,10 +12,12 @@ class TowerTables extends Component{
 		return (
 		<Grid container spacing={24}>
 			<Grid item xs={12} lg={6}>
-				<TowerTable towerTitle="Water Tower" items={this.props.towers.WATER_TOWER} deleteEntry={this.props.deleteEntry} towerName="waterTower"/>
+				<TowerTable towerTitle="Water Tower" items={this.props.towers.WATER_TOWER} deleteEntry={this.props.deleteEntry}
+				towerName="waterTower" isRunning={this.props.waterTowerRunning} togglePowerState={this.props.toggleWaterTowerPowerState}/>
 			</Grid>
 			<Grid item xs={12} lg={6}>
-				<TowerTable towerTitle="Air Tower" items={this.props.towers.AIR_TOWER} deleteEntry={this.props.deleteEntry} towerName="airTower"/>
+				<TowerTable towerTitle="Air Tower" items={this.props.towers.AIR_TOWER} deleteEntry={this.props.deleteEntry}
+				towerName="airTower" isRunning={this.props.airTowerRunning} togglePowerState={this.props.toggleAirTowerPowerState}/>
 			</Grid>
 		</Grid>
 		)

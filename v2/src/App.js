@@ -22,11 +22,27 @@ class App extends Component {
 				AIR_TOWER: [],
 				WATER_TOWER: []
 			},
-			isFormVisible: JSON.parse(localStorage.getItem('isFormVisible'))
+			isFormVisible: JSON.parse(localStorage.getItem('isFormVisible')),
+			WATER_TOWER_RUNNING: true,
+			AIR_TOWER_RUNNING: true
 		};
 
-		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
-		// this.socket = openSocket('http://localhost:8000/');
+		// this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
+		this.socket = openSocket('http://localhost:8000/');
+
+		this.socket.on('loadAirTowerPowerState', (isRunning) => {
+			this.setState({
+				AIR_TOWER_RUNNING: isRunning
+			});
+			console.log("AIR_TOWER_RUNNING: " + isRunning);
+		});
+
+		this.socket.on('loadWaterTowerPowerState', (isRunning) => {
+			this.setState({
+				WATER_TOWER_RUNNING: isRunning
+			});
+			console.log("WATER_TOWER_RUNNING: " + isRunning);
+		});
 
     this.socket.on( 'loadAirTower' , ( airTower ) => {
 			this.setState({
@@ -118,7 +134,11 @@ class App extends Component {
         <AppHeader toggleFormVisibility={this.toggleFormVisibility.bind(this)}/>
         <div className={this.props.classes.contentContainer}>
           <TowerForms sendTower={this.sendTower.bind(this)} isFormVisible={this.state.isFormVisible}/>
-          <TowerTables towers={this.state.towers} deleteEntry={this.deleteEntry.bind(this)}/>
+          <TowerTables towers={this.state.towers} deleteEntry={this.deleteEntry.bind(this)}
+					toggleWaterTowerPowerState={this.toggleWaterTowerPowerState.bind(this)}
+					toggleAirTowerPowerState={this.toggleAirTowerPowerState.bind(this)}
+					waterTowerRunning={this.state.WATER_TOWER_RUNNING}
+					airTowerRunning={this.state.AIR_TOWER_RUNNING}/>
         </div>
       </div>
     );
@@ -129,7 +149,16 @@ class App extends Component {
 		this.setState({ isFormVisible: isFormVisible});
 		localStorage.setItem('isFormVisible', isFormVisible);
 	}
+	toggleWaterTowerPowerState(){
+		this.socket.emit('waterTowerPowerStateChange', !this.state.WATER_TOWER_RUNNING);
+	}
+
+	toggleAirTowerPowerState(){
+		this.socket.emit('airTowerPowerStateChange', !this.state.AIR_TOWER_RUNNING);
+	}
 }
+
+
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -54,6 +54,9 @@ let towers = {
   waterTower: []
 }
 
+let WATER_TOWER_RUNNING = true;
+let AIR_TOWER_RUNNING = true;
+
 socket.on('connection', function( client ){
   loadDBData(client);
   client.emit('connected');
@@ -61,6 +64,20 @@ socket.on('connection', function( client ){
 
 	client.emit('loadAirTower', towers.airTower);
 	client.emit('loadWaterTower', towers.waterTower);
+  client.emit('loadAirTowerPowerState', AIR_TOWER_RUNNING);
+  client.emit('loadWaterTowerPowerState', WATER_TOWER_RUNNING);
+
+  client.on('airTowerPowerStateChange', function(isRunning){
+    AIR_TOWER_RUNNING = isRunning;
+    client.emit('loadAirTowerPowerState', AIR_TOWER_RUNNING);
+    client.broadcast.emit('loadAirTowerPowerState', AIR_TOWER_RUNNING);
+  });
+
+  client.on('waterTowerPowerStateChange', function(isRunning){
+    WATER_TOWER_RUNNING = isRunning;
+    client.emit('loadWaterTowerPowerState', WATER_TOWER_RUNNING);
+    client.broadcast.emit('loadWaterTowerPowerState', WATER_TOWER_RUNNING);
+  });
 
 	client.on('airTower', function(towerEntry){
 		addToTower(towers.airTower, towerEntry, 'AIR_TOWER');

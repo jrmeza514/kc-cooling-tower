@@ -11,10 +11,42 @@
 	padding: 16px;
 	border-radius: 100px;
 	font-weight: bold;
-	max-width: 120px;
+	max-width: 200px;
 	text-align: center;
 	margin-bottom: 16px;
 	margin-top: 16px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.towerTitle .playPauseButton {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border-radius: 100px;
+	cursor: pointer;
+}
+
+.playPauseButton.running{
+	background-image: url("../img/baseline-pause.svg");
+	background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+.playPauseButton.paused{
+	background-image: url("../img/baseline-play_arrow.svg");
+	background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+
+.towerTitle .text{
+	display: inline-block;
+	height: 100%;
+	font-size: 1.4em;
 }
 
 .tableContainer:hover {
@@ -65,6 +97,7 @@
 	width: 14%;
 	display: inline-block;
 }
+
 
 
 @media screen and (max-width: 600px) {

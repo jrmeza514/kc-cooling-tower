@@ -31,7 +31,14 @@ class TowerTableItem extends Component {
 				<div className="time">{this.formatDateTime(this.props.item.time)}</div>
 				<div className="exitTime">{this.formatDateTime(this.props.item.exitTime)}</div>
 				<div className="timer">{this.state.timeLeft <= 0 ? this.formatTime(0) : this.formatTime(this.state.timeLeft)}</div>
-				<img src="./img/baseline-delete-24px.svg" alt="X" className="deleteButton" onClick={() => {this.props.deleteEntry(this.props.index, this.props.towerName)}}></img>
+				<img src="./img/baseline-delete-24px.svg" alt="X" className="deleteButton" onClick={() => {
+					if (this.props.isTowerRunning) {
+						this.props.deleteEntry(this.props.index, this.props.towerName);
+					}
+					else {
+						alert('Cannot delete while tower is paused');
+					}
+				}}></img>
 			</div>
 		)
 	}
