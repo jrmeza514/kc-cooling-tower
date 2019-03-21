@@ -16,8 +16,7 @@ const DBManager = new MongoManager();
 const MINUTE = 60000;
 const HOUR = MINUTE * 60;
 const PORT = process.env.PORT || 8000;
-
-
+const DOWNTIME_INT_MS = 1000;
 
 
 router.get('/', (req, res) => {
@@ -56,6 +55,9 @@ let towers = {
 
 let WATER_TOWER_RUNNING = true;
 let AIR_TOWER_RUNNING = true;
+
+let waterTowerDownTime = 0;
+let airTowerDownTime = 0;
 
 socket.on('connection', function( client ){
   loadDBData(client);
@@ -117,6 +119,35 @@ socket.on('connection', function( client ){
     }
 
   });
+
+  setInterval(function(){
+    if (!WATER_TOWER_RUNNING) {
+      waterTowerDownTime += DOWNTIME_INT_MS;
+    }
+
+    if (!AIR_TOWER_RUNNING) {
+      airTowerDownTime += DOWNTIME_INT_MS;
+    }
+
+    if (WATER_TOWER_RUNNING && waterTowerDownTime != 0) {
+      applyTowerDowntime(towers.waterTower, waterTowerDownTime, "WATER_TOWER");
+      client.emit('loadWaterTower', towers.waterTower);
+      client.broadcast.emit('loadWaterTower', towers.waterTower);
+    }
+    if (AIR_TOWER_RUNNING && airTowerDownTime != 0) {
+      applyTowerDowntime(towers.airTower, airTowerDownTime, "AIR_TOWER");
+      client.emit('loadAirTower', towers.airTower);
+      client.broadcast.emit('loadAirTower', towers.airTower);
+    }
+
+    if(WATER_TOWER_RUNNING){
+      waterTowerDownTime = 0;
+    }
+    if (AIR_TOWER_RUNNING) {
+      airTowerDownTime = 0;
+    }
+
+  }, DOWNTIME_INT_MS);
 });
 
 function getTimeAsNumber(){
@@ -193,4 +224,25 @@ function loadDBData(client){
 function addToLog(item, towerName){
   DBManager.addToLog(JSON.parse(JSON.stringify(item)), towerName);
 }
+
+function applyTowerDowntime(tower, time, towerName){
+
+  for (let x = 0; x < tower.length; x++) {
+    let entry = tower[x];
+    console.log(entry.exitTime);
+    entry.exitTime += time;
+    switch (towerName) {
+    case "WATER_TOWER":
+      DBManager.updateWaterTower(JSON.parse(JSON.stringify(entry)));
+      break;
+    case "AIR_TOWER":
+      DBManager.updateAirTower(JSON.parse(JSON.stringify(entry)));
+      break;
+    default:
+    }
+  }
+
+}
+
+
 server.listen( PORT );

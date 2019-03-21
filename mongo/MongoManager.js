@@ -1,9 +1,45 @@
 const MONGODB_URI = "mongodb+srv://jrmeza514:eOvRE08VknB7iJ5c@cluster0-dmufo.mongodb.net/test?retryWrites=true";
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 const luxon = require('luxon');
 
 class MongoManager {
 	constructor(){}
+
+
+	updateWaterTower(item){
+		console.log(item.exitTime);
+		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
+			let db = client.db('cooling-tower');
+			db.collection('WATER_TOWER').updateOne(
+				{_id: ObjectID(item._id) },
+				{
+					$set: {
+						exitTime: item.exitTime
+					}
+				},
+				function(err, res) {
+					if (err) throw err;
+					client.close();
+				});
+		});
+	}
+
+	updateAirTower(item){
+		console.log(item.exitTime);
+		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
+			let db = client.db('cooling-tower');
+			db.collection('AIR_TOWER').updateOne({_id: ObjectID(item._id) },{
+				$set: {
+					exitTime: item.exitTime
+				}
+			},
+			function(err, res) {
+				if (err) throw err;
+				client.close();
+			});
+		});
+	}
 
 	addAirTower(item){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {

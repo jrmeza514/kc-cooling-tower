@@ -7,14 +7,17 @@ class TowerTableItem extends Component {
 
 	constructor(){
 		super();
-
-		this.timerUpdateInterval = setInterval(() => {
-			this.setState({
-				timeLeft: this.getTimeLeft()
-			});
-		}, 500);
 	}
 
+	componentDidMount(){
+		this.timerUpdateInterval = setInterval(() => {
+			if (this.props.isTowerRunning) {
+				this.setState({
+					timeLeft: this.getTimeLeft()
+				});
+			}
+		}, 500);
+	}
 	componentWillUnmount(){
 		clearInterval(this.timerUpdateInterval);
 	}

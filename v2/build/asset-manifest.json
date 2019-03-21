@@ -1,15 +1,15 @@
 {
-  "main.css": "/static/css/main.e6c7a7a4.chunk.css",
-  "main.js": "/static/js/main.6dabbc1a.chunk.js",
-  "main.js.map": "/static/js/main.6dabbc1a.chunk.js.map",
+  "main.css": "/static/css/main.2daeefb5.chunk.css",
+  "main.js": "/static/js/main.99ad141f.chunk.js",
+  "main.js.map": "/static/js/main.99ad141f.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.fdfcfda2.js",
   "runtime~main.js.map": "/static/js/runtime~main.fdfcfda2.js.map",
   "static/js/2.5facbd61.chunk.js": "/static/js/2.5facbd61.chunk.js",
   "static/js/2.5facbd61.chunk.js.map": "/static/js/2.5facbd61.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.75c440ef50558b130a82a32b0bd0f1b2.js": "/precache-manifest.75c440ef50558b130a82a32b0bd0f1b2.js",
+  "precache-manifest.cd1d83a299b68f21695f6de6a6521a16.js": "/precache-manifest.cd1d83a299b68f21695f6de6a6521a16.js",
   "service-worker.js": "/service-worker.js",
-  "static/css/main.e6c7a7a4.chunk.css.map": "/static/css/main.e6c7a7a4.chunk.css.map",
+  "static/css/main.2daeefb5.chunk.css.map": "/static/css/main.2daeefb5.chunk.css.map",
   "static/media/TowerTableItem.css": "/static/media/baseline-delete-24px.95cff60e.svg",
-  "static/media/TowerTable.css": "/static/media/baseline-delete-white-24px.c195ea9b.svg"
+  "static/media/TowerTable.css": "/static/media/baseline-play_arrow.8853fa20.svg"
 }

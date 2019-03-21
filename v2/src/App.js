@@ -27,8 +27,8 @@ class App extends Component {
 			AIR_TOWER_RUNNING: true
 		};
 
-		// this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
-		this.socket = openSocket('http://localhost:8000/');
+		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
+		// this.socket = openSocket('http://localhost:8000/');
 
 		this.socket.on('loadAirTowerPowerState', (isRunning) => {
 			this.setState({
