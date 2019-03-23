@@ -34,14 +34,12 @@ class App extends Component {
 			this.setState({
 				AIR_TOWER_RUNNING: isRunning
 			});
-			console.log("AIR_TOWER_RUNNING: " + isRunning);
 		});
 
 		this.socket.on('loadWaterTowerPowerState', (isRunning) => {
 			this.setState({
 				WATER_TOWER_RUNNING: isRunning
 			});
-			console.log("WATER_TOWER_RUNNING: " + isRunning);
 		});
 
     this.socket.on( 'loadAirTower' , ( airTower ) => {
@@ -51,7 +49,6 @@ class App extends Component {
 					AIR_TOWER: airTower
 				}
 			});
-			console.log(this.state.towers.AIR_TOWER);
 			this.setState(this.state);
 	  });
 
@@ -62,7 +59,6 @@ class App extends Component {
 					AIR_TOWER: this.state.towers.AIR_TOWER
 				}
 			});
-			console.log(this.state.towers.WATER_TOWER);
 			this.setState(this.state);
 	  });
 
