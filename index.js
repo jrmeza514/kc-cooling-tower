@@ -29,14 +29,11 @@ router.get('/css/main.css', (req, res) => {
 });
 
 router.get('/:logDate', (req, res) => {
-  console.log(req.params)
   let wlog = req.params.logDate + `-WATER_TOWER-log`;
   let alog = req.params.logDate + `-AIR_TOWER-log`;
 
   DBManager.getLog(wlog, (res1) => {
-    console.log(res1);
     DBManager.getLog(alog, (res2) => {
-      console.log(res2);
       res.send({
         airTower: res2,
         waterTower: res1
@@ -123,7 +120,7 @@ socket.on('connection', function( client ){
 
   if (!towerPowerStateInterval) {
     towerPowerStateInterval = setInterval(function(){
-      console.log("Cycle");
+
       if (!WATER_TOWER_RUNNING) waterTowerDownTime += DOWNTIME_INT_MS;
       if (!AIR_TOWER_RUNNING)  airTowerDownTime += DOWNTIME_INT_MS;
 
@@ -157,8 +154,6 @@ function getTimeLeft( item ){
 	return timeLeft;
 }
 function addToTower(tower, item, towerName){
-  addToLog(item, towerName);
-
 	if (tower.length == 0 ) {
 		tower.push(item);
     saveToTower(tower, item, towerName);
@@ -213,10 +208,6 @@ function loadDBData(client){
     towers.waterTower = res;
   	client.emit('loadWaterTower', towers.waterTower);
   });
-}
-
-function addToLog(item, towerName){
-  DBManager.addToLog(JSON.parse(JSON.stringify(item)), towerName);
 }
 
 function applyTowerDowntime(tower, time, towerName){
