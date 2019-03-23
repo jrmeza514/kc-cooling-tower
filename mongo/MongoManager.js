@@ -41,7 +41,7 @@ class MongoManager {
 		this.updateLog(JSON.parse(JSON.stringify(item)), "AIR_TOWER");
 	}
 
-	addAirTower(item){
+	addToAirTower(item){
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
 			let db = client.db('cooling-tower');
 			db.collection('AIR_TOWER').insertOne(item)

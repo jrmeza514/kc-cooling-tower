@@ -191,7 +191,7 @@ function saveToTower(tower, item, towerName){
     DBManager.addToWaterTower(item);
     break;
   case 'AIR_TOWER':
-    DBManager.addAirTower(item);
+    DBManager.addToAirTower(item);
     break;
   default:
     break;
