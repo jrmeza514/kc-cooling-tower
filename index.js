@@ -18,6 +18,7 @@ const HOUR = MINUTE * 60;
 const PORT = process.env.PORT || 8000;
 const DOWNTIME_INT_MS = 1000;
 
+var towerPowerStateInterval = null;
 
 router.get('/', (req, res) => {
   res.sendFile(__dirname + '/v2/log_viewer/index.html');
@@ -120,34 +121,27 @@ socket.on('connection', function( client ){
 
   });
 
-  setInterval(function(){
-    if (!WATER_TOWER_RUNNING) {
-      waterTowerDownTime += DOWNTIME_INT_MS;
-    }
+  if (!towerPowerStateInterval) {
+    towerPowerStateInterval = setInterval(function(){
+      console.log("Cycle");
+      if (!WATER_TOWER_RUNNING) waterTowerDownTime += DOWNTIME_INT_MS;
+      if (!AIR_TOWER_RUNNING)  airTowerDownTime += DOWNTIME_INT_MS;
 
-    if (!AIR_TOWER_RUNNING) {
-      airTowerDownTime += DOWNTIME_INT_MS;
-    }
+      if (WATER_TOWER_RUNNING && waterTowerDownTime != 0) {
+        applyTowerDowntime(towers.waterTower, waterTowerDownTime, "WATER_TOWER");
+        client.emit('loadWaterTower', towers.waterTower);
+        client.broadcast.emit('loadWaterTower', towers.waterTower);
+      }
+      if (AIR_TOWER_RUNNING && airTowerDownTime != 0) {
+        applyTowerDowntime(towers.airTower, airTowerDownTime, "AIR_TOWER");
+        client.emit('loadAirTower', towers.airTower);
+        client.broadcast.emit('loadAirTower', towers.airTower);
+      }
 
-    if (WATER_TOWER_RUNNING && waterTowerDownTime != 0) {
-      applyTowerDowntime(towers.waterTower, waterTowerDownTime, "WATER_TOWER");
-      client.emit('loadWaterTower', towers.waterTower);
-      client.broadcast.emit('loadWaterTower', towers.waterTower);
-    }
-    if (AIR_TOWER_RUNNING && airTowerDownTime != 0) {
-      applyTowerDowntime(towers.airTower, airTowerDownTime, "AIR_TOWER");
-      client.emit('loadAirTower', towers.airTower);
-      client.broadcast.emit('loadAirTower', towers.airTower);
-    }
-
-    if(WATER_TOWER_RUNNING){
-      waterTowerDownTime = 0;
-    }
-    if (AIR_TOWER_RUNNING) {
-      airTowerDownTime = 0;
-    }
-
-  }, DOWNTIME_INT_MS);
+      if(WATER_TOWER_RUNNING) waterTowerDownTime = 0;
+      if (AIR_TOWER_RUNNING) airTowerDownTime = 0;
+    }, DOWNTIME_INT_MS);
+  }
 });
 
 function getTimeAsNumber(){
