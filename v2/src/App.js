@@ -6,10 +6,23 @@ import TowerForms from './TowerForms';
 import TowerTables from './TowerTables';
 import { withStyles } from '@material-ui/core/styles';
 import openSocket from 'socket.io-client';
-
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PowerIcon from '@material-ui/icons/PowerSettingsNew';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 const styles = {
 	contentContainer: {
 		padding: '16px',
+	},
+	list: {
+		width: 250
 	}
 }
 
@@ -24,7 +37,8 @@ class App extends Component {
 			},
 			isFormVisible: JSON.parse(localStorage.getItem('isFormVisible')),
 			WATER_TOWER_RUNNING: true,
-			AIR_TOWER_RUNNING: true
+			AIR_TOWER_RUNNING: true,
+			drawerOpen: false
 		};
 
 		this.socket = openSocket('https://kc-cooling-tower.herokuapp.com/');
@@ -121,13 +135,34 @@ class App extends Component {
         towerName: tower
       });
     }
-
   }
 
   render() {
     return (
       <div>
-        <AppHeader toggleFormVisibility={this.toggleFormVisibility.bind(this)}/>
+        <AppHeader toggleFormVisibility={this.toggleFormVisibility.bind(this)} toggleDrawer={this.toggleDrawer.bind(this)}/>
+				<Drawer open={this.state.drawerOpen}  onClose={()=>{this.toggleDrawer(false)}}>
+          <div tabIndex={0} role="button" onClick={()=>{this.toggleDrawer(false)}}>
+					<List className={this.props.classes.list}>
+						<ListItem button key="toggleFormVisibility" onClick={this.toggleFormVisibility.bind(this)}>
+							<ListItemIcon>
+								{
+									this.state.isFormVisible ? <VisibilityOffIcon/> : <VisibilityIcon/>
+								}
+							</ListItemIcon>
+							<ListItemText primary={this.state.isFormVisible ? "Hide Form" : "Show Form"} />
+						</ListItem>
+						<ListItem button key="toggleWaterTowerPowerState" onClick={this.toggleWaterTowerPowerState.bind(this)}>
+              <ListItemIcon><PowerIcon/></ListItemIcon>
+              <ListItemText primary={this.state.WATER_TOWER_RUNNING ? "Stop Water Tower" : "Start Water Tower"} />
+            </ListItem>
+            <ListItem button key="toggleAirTowerPowerState" onClick={this.toggleAirTowerPowerState.bind(this)}>
+              <ListItemIcon><PowerIcon/></ListItemIcon>
+              <ListItemText primary={this.state.AIR_TOWER_RUNNING ? "Stop Air Tower" : "Start Air Tower"} />
+            </ListItem>
+	        </List>
+          </div>
+        </Drawer>
         <div className={this.props.classes.contentContainer}>
           <TowerForms sendTower={this.sendTower.bind(this)} isFormVisible={this.state.isFormVisible}/>
           <TowerTables towers={this.state.towers} deleteEntry={this.deleteEntry.bind(this)}
@@ -151,6 +186,11 @@ class App extends Component {
 
 	toggleAirTowerPowerState(){
 		this.socket.emit('airTowerPowerStateChange', !this.state.AIR_TOWER_RUNNING);
+	}
+	toggleDrawer(open){
+		this.setState({
+			drawerOpen: open
+		});
 	}
 }
 

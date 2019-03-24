@@ -19,6 +19,10 @@
 	flex-direction: row;
 	justify-content: space-between;
 }
+.tableBody{
+	background-color: white;
+	min-height: 36px;
+}
 
 .towerTitle .playPauseButton {
 	display: inline-block;
@@ -102,9 +106,9 @@
 
 @media screen and (max-width: 600px) {
 	.towerTitle{
-		font-size: 0.5em;
+		font-size: 1em;
 		padding: 10px;
-		max-width: 70px;
+		max-width: 160px;
 	}
 
 	.tableContainer{
@@ -114,5 +118,10 @@
 	.listItem .deleteButton{
 		width: 10px;
 		height: 10px;
+	}
+
+	.tableBody{
+		background-color: white;
+		min-height: 20px;
 	}
 }

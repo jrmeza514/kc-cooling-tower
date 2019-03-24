@@ -31,7 +31,7 @@ function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={props.toggleFormVisibility.bind(this)}>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{props.toggleDrawer(true)}}>
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>

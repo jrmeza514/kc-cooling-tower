@@ -16,10 +16,6 @@ const styles = {
 		width: '100%',
 		color: 'white',
 		padding: '8px'
-	},
-	tableBody: {
-		backgroundColor: 'white',
-		minHeight: '36px'
 	}
 }
 class TowerTable extends Component{
@@ -47,7 +43,7 @@ class TowerTable extends Component{
 							<div className="exitTime">Time Out</div>
 							<div className="timer">Time Left</div>
 						</div>
-						<div className={this.props.classes.tableBody}>
+						<div className="tableBody">
 							{listItems}
 						</div>
 					</div>
