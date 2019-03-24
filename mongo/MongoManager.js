@@ -109,10 +109,10 @@ class MongoManager {
 
 	addToLog(item, towerName){
 		let lx = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles');
-	  item.time = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
-	  item.exitTime = luxon.DateTime.fromMillis(item.exitTime).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
-	  let date = lx.toLocaleString().split('/').join('-');
-	  let logName = date + `-${towerName}-log`;
+		item.time = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
+		item.exitTime = luxon.DateTime.fromMillis(item.exitTime).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
+		let date = lx.toLocaleString().split('/').join('-');
+		let logName = date + `-${towerName}-log`;
 
 
 		MongoClient.connect(MONGODB_URI, { useNewUrlParser: true }, (err, client) => {
@@ -129,10 +129,10 @@ class MongoManager {
 
 	updateLog(item, towerName){
 		let lx = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles');
-	  item.time = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
-	  item.exitTime = luxon.DateTime.fromMillis(item.exitTime).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
-	  let date = lx.toLocaleString().split('/').join('-');
-	  let logName = date + `-${towerName}-log`;
+		item.time = luxon.DateTime.fromMillis(item.time).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
+		item.exitTime = luxon.DateTime.fromMillis(item.exitTime).setZone('America/Los_Angeles').toISO().substr(0,16).replace('T', ' ');
+		let date = lx.toLocaleString().split('/').join('-');
+		let logName = date + `-${towerName}-log`;
 
 		console.log(logName);
 		console.log(item);
